@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core'
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-start',
@@ -6,19 +6,17 @@ import {Component, OnInit} from '@angular/core'
   styleUrl: './start.component.css'
 })
 
-export class StartComponent implements OnInit{
-
-  activeForm: 'login' | 'register';
-
+export class StartComponent implements OnInit, OnDestroy{
+  private intervalId: any;
+  constructor() {
+  }
   ngOnInit(): void {
     this.updateTime();
-    setInterval(() => this.updateTime(), 9000);
+    this.intervalId = setInterval(() => this.updateTime(), 9000);
   }
-  constructor() {
-    this.activeForm = 'login';
-  }
-  formActivation(formType: 'login' | 'register'): void {
-    this.activeForm = formType;
+
+  ngOnDestroy(): void {
+    clearInterval(this.intervalId);
   }
 
   updateTime(): void {
@@ -29,6 +27,4 @@ export class StartComponent implements OnInit{
       clock.innerHTML = now.toLocaleTimeString() + " " + now.toLocaleDateString();
     }
   }
-
-
 }

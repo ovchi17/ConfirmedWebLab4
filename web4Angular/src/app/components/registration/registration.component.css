@@ -1,23 +1,20 @@
-.mainStruct {
-  text-align: center;
-  padding-top: 5px;
-  color: #f5f3f7;
-}
-
-h2{
-  font-size: 28px;
-  margin: 0;
-}
-
-h3{
-  font-size: 16px;
-}
-
-.buttonBlock{
+.formBlock {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+}
+
+.formContainer {
+  display: block;
+  height: 250px;
+  width: 500px;
+  text-align: center;
+  border: 5px solid #1c1326;
+  padding: 20px;
+  margin-top: 0px;
+  color: #f5f3f7;
+  font-size: 22px;
+  font-family: cursive;
 }
 
 .bigButtons{
