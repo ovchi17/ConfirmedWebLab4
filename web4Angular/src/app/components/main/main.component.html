@@ -1,0 +1,129 @@
+<div class="workZone">
+  <div class="container">
+    <div class="XYcoord">
+      <div id="coordinatePanelWrapper"
+                     style="position: relative; margin-top: 10px; margin-left: 70px;">
+        <div id="coordinatePanel" style="position: absolute; width: 400px; height: 400px;">
+          <svg width="400" height="400">
+            <line x1="0" y1="200" x2="400" y2="200" stroke="white" stroke-width="2"/>
+            <line x1="200" y1="0" x2="200" y2="400" stroke="white" stroke-width="2"/>
+            <
+            !— STRELOCHKI —>
+            <polygon points="400,200 390,195 390,205" fill="white"/>
+            <polygon points="200,0 195,10 205,10" fill="white"/>
+
+            <
+            !— Четверть круга —>
+            <path d="M200,200 L200,125 A70,70 0 0,1 275,200 Z"
+                  fill="#1c1326" stroke="white"
+                  stroke-width="1"/>
+            <
+            !— Треугольник —>
+            <polygon points="50,200 200,200 200,350" fill="#1c1326" stroke="white" stroke-width="1"/>
+            <
+            !— Прямоугольник —>
+            <polygon points="200,125 200,200 50,200 50,125" fill="#1c1326" stroke="white"
+                     stroke-width="1"/>
+
+            <
+            !— черточки X-->
+            <line x1="50" y1="195" x2="50" y2="205" stroke="white" stroke-width="2"/>
+            <line x1="125" y1="195" x2="125" y2="205" stroke="white" stroke-width="2"/>
+            <line x1="275" y1="195" x2="275" y2="205" stroke="white" stroke-width="2"/>
+            <line x1="350" y1="195" x2="350" y2="205" stroke="white" stroke-width="2"/>
+            <
+            !— черточки Y-->
+            <line x1="195" y1="50" x2="205" y2="50" stroke="white" stroke-width="2"/>
+            <line x1="195" y1="125" x2="205" y2="125" stroke="white" stroke-width="2"/>
+            <line x1="195" y1="275" x2="205" y2="275" stroke="white" stroke-width="2"/>
+            <line x1="195" y1="350" x2="205" y2="350" stroke="white" stroke-width="2"/>
+
+            <text className="svgR" id="R1" x="180" y="55" font-size="13" fill="ghostwhite">R</text>
+            <text className="svgRd2" id="R2" x="173" y="129" font-size="13" fill="ghostwhite">R/2</text>
+            <text className="svg-Rd2" id="R3" x="169" y="279" font-size="13" fill="ghostwhite">-R/2</text>
+            <text className="svg-R" id="R4" x="180" y="355" font-size="13" fill="ghostwhite">-R</text>
+
+            <text className="svg-R" id="R5" x="45" y="220" font-size="13" fill="ghostwhite">-R</text>
+            <text className="svg-Rd2" id="R6" x="110" y="220" font-size="13" fill="ghostwhite">-R/2</text>
+            <text className="svgRd2" id="R7" x="265" y="220" font-size="13" fill="ghostwhite">R/2</text>
+            <text className="svgR" id="R8" x="345" y="220" font-size="13" fill="ghostwhite">R</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <form id="simpleForm" onsubmit="">
+      <div id="form">
+        <div id="structForm">
+          <br>
+          <div class="x-input" id="x-input">
+            <label for="xSelect">Выберите X:</label>
+            <select id="xSelect" name="x">
+              <option value="1">1</option>
+              <option value="1.5">1.5</option>
+              <option value="2">2</option>
+              <option value="2.5">2.5</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+          <div class="y-input" id="y-input">
+            <label for="y">Выберите X от -5 до 5:</label>
+            <input type="text" id="y" maxlength="7">
+          </div>
+          <div class="r-input" id="r-input">
+              <label for="rSelect">Выберите R:</label>
+              <select id="rSelect" name="r">
+                <option value="1">1</option>
+                <option value="1.5">1.5</option>
+                <option value="2">2</option>
+                <option value="2.5">2.5</option>
+                <option value="3">3</option>
+              </select>
+          </div>
+        </div>
+        <button type="submit" value="Confirm" class="bigButtons">Submit</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+<br>
+<div id="resultTable">
+  <button class="bigButtons" routerLink="/">StartPage</button>
+  <button class="bigButtons">Clear</button>
+
+  <p-table id="tableMain" [tableStyle]="{
+  'justify-content': 'space-evenly',
+  'display': 'flex',
+  'flex-grow': '1',
+  'border-collapse': 'separate',
+  'letter-spacing': '1px',
+  'background-color': '#1c1326',
+  'color': '#1c1326',
+  'text-align': 'center',
+  'border-radius': '16px',
+  'border-spacing': '8px',
+  'border': '2px solid #f5f3f7',
+}">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Result</th>
+        <th>X</th>
+        <th>Y</th>
+        <th>R</th>
+        <th>Current Time</th>
+        <th>Script Time</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body">
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+</div>
