@@ -91,19 +91,6 @@ public class ResultEntity implements Serializable {
     public void setExecutionTime(long executionTime) {
         this.executionTime = executionTime;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ResultEntity that)) return false;
-        return getId() == that.getId() && getOwnerID() == that.getOwnerID() && Double.compare(getX(), that.getX()) == 0 && Double.compare(getY(), that.getY()) == 0 && Double.compare(getR(), that.getR()) == 0 && isResult() == that.isResult() && getExecutionTime() == that.getExecutionTime() && Objects.equals(getTime(), that.getTime());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getOwnerID(), getX(), getY(), getR(), isResult(), getTime(), getExecutionTime());
-    }
-
     @Override
     public String toString() {
         return "CheckAreaEntity{" +
