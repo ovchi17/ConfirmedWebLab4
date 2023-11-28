@@ -12,7 +12,7 @@ export class StartComponent implements OnInit, OnDestroy{
   }
   ngOnInit(): void {
     this.updateTime();
-    this.intervalId = setInterval(() => this.updateTime(), 9000);
+    this.intervalId = setInterval(() => this.updateTime(), 1000);
   }
 
   ngOnDestroy(): void {
