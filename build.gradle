@@ -28,6 +28,9 @@ dependencies {
     implementation('org.hibernate:hibernate-core:6.0.2.Final')
     implementation('org.postgresql:postgresql:42.6.0')
 
+    implementation('com.fasterxml.jackson.core:jackson-annotations:2.3.3')
+    implementation('com.fasterxml.jackson.core:jackson-databind:2.15.1')
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation('org.springframework.security:spring-security-web:6.1.2')
     implementation('org.springframework.security:spring-security-config:6.1.2')

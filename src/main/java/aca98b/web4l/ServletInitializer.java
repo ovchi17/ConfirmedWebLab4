@@ -1,5 +1,6 @@
 package aca98b.web4l;
 
+import aca98b.web4l.config.AppConfig;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
@@ -7,7 +8,7 @@ public class ServletInitializer extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Web4LApplication.class);
+        return application.sources(AppConfig.class);
     }
 
 }
