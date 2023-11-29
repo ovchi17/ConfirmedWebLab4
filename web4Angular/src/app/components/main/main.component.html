@@ -56,28 +56,19 @@
         <div id="structForm">
           <br>
           <div class="x-input" id="x-input">
-            <label for="xSelect">Выберите X:</label>
-            <select id="xSelect" name="x">
-              <option value="1">1</option>
-              <option value="1.5">1.5</option>
-              <option value="2">2</option>
-              <option value="2.5">2.5</option>
-              <option value="3">3</option>
-            </select>
+            <label>Choose X value:</label>
+            <p-autoComplete [(ngModel)]="selectedValueX" [dropdown]="true" [suggestions]="filteredValuesX" (completeMethod)="filterValX($event)" field="name" id="xAuto"></p-autoComplete>
           </div>
+          <br/>
           <div class="y-input" id="y-input">
-            <label for="y">Выберите X от -5 до 5:</label>
-            <input type="text" id="y" maxlength="7">
+            <label>Choose Y value:</label>
+<!--            <input name="y" pKeyFilter="num" placeholder="-5 to 3"  [ngModel]="selectedValueY" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectedValueY = $event" style="font-size: 32px; width: 200px;" />-->
+            <input type="text" pInputText placeholder="-5 to 3" [(ngModel)]="selectedValueY" [ngModelOptions]="{standalone: true}" />
           </div>
+          <br/>
           <div class="r-input" id="r-input">
-              <label for="rSelect">Выберите R:</label>
-              <select id="rSelect" name="r">
-                <option value="1">1</option>
-                <option value="1.5">1.5</option>
-                <option value="2">2</option>
-                <option value="2.5">2.5</option>
-                <option value="3">3</option>
-              </select>
+            <label>Choose R value:</label>
+            <p-autoComplete [(ngModel)]="selectedValueR" [dropdown]="true" [suggestions]="filteredValuesR" (completeMethod)="filterValR($event)" field="name" id="rAuto"></p-autoComplete>
           </div>
         </div>
         <button type="submit" value="Confirm" class="bigButtons">Submit</button>
@@ -91,39 +82,26 @@
   <button class="bigButtons" routerLink="/">StartPage</button>
   <button class="bigButtons">Clear</button>
 
-  <p-table id="tableMain" [tableStyle]="{
-  'justify-content': 'space-evenly',
-  'display': 'flex',
-  'flex-grow': '1',
-  'border-collapse': 'separate',
-  'letter-spacing': '1px',
-  'background-color': '#1c1326',
-  'color': '#1c1326',
-  'text-align': 'center',
-  'border-radius': '16px',
-  'border-spacing': '8px',
-  'border': '2px solid #f5f3f7',
-}">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Result</th>
-        <th>X</th>
-        <th>Y</th>
-        <th>R</th>
-        <th>Current Time</th>
-        <th>Script Time</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body">
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </ng-template>
-  </p-table>
-
+  <table id="table">
+    <thead>
+    <tr>
+      <th>Result</th>
+      <th>X</th>
+      <th>Y</th>
+      <th>R</th>
+      <th>Current Time</th>
+      <th>Script Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let el of modelList">
+      <td>{{ el.result }}</td>
+      <td>{{ el.x }}</td>
+      <td>{{ el.y }}</td>
+      <td>{{ el.r }}</td>
+      <td>{{ el.time }}</td>
+      <td>{{ el.scriptTime }}</td>
+    </tr>
+    </tbody>
+  </table>
 </div>
