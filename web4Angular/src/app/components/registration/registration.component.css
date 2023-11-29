@@ -6,7 +6,7 @@
 
 .formContainer {
   display: block;
-  height: 250px;
+  height: 350px;
   width: 500px;
   text-align: center;
   border: 5px solid #1c1326;
@@ -27,4 +27,8 @@
   border-radius: 10px;
   max-width: 200px;
   max-height: 50px;
+}
+
+#error {
+  color: red;
 }
