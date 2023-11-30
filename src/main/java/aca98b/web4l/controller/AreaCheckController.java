@@ -1,7 +1,7 @@
 package aca98b.web4l.controller;
 
 import aca98b.web4l.model.Result;
-import aca98b.web4l.model.request.CheckHitRequest;
+import aca98b.web4l.model.request.PointRequest;
 import aca98b.web4l.service.ResultService;
 import aca98b.web4l.util.AreaChecker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class AreaCheckController {
 
     @PostMapping
     public ResponseEntity<Result> newCheckResult(final Principal principal,
-                                                 @RequestBody CheckHitRequest request) {
+                                                 @RequestBody PointRequest request) {
         final Result result = new Result();
         result.setRequest(request);
         final long startTime = System.nanoTime();

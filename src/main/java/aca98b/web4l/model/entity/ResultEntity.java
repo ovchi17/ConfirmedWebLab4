@@ -93,7 +93,7 @@ public class ResultEntity implements Serializable {
     }
     @Override
     public String toString() {
-        return "CheckAreaEntity{" +
+        return "ResultEntity{" +
                 "id=" + id +
                 ", ownerID=" + ownerID +
                 ", x=" + x +
