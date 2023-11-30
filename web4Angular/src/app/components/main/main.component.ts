@@ -22,12 +22,17 @@ interface MyModel {
 export class MainComponent implements OnInit {
 
   modelList: MyModel[] = [];
-  values: { name: string }[] = [];
-  selectedValueX: any;
-  selectedValueY: string | number;
-  selectedValueR: any;
+  values: string[] = [];
+  // @ts-ignore
+  selectedValueX: string = "";
+  // @ts-ignore
+  selectedValueY: string = "";
+  // @ts-ignore
+  selectedValueR: string = "";
   filteredValuesX: any[] = [];
   filteredValuesR: any[] = [];
+  isTextVisible = false;
+  errorMessage = "";
 
   constructor() {
     this.modelList = [
@@ -49,18 +54,7 @@ export class MainComponent implements OnInit {
       },
     ];
 
-    this.values = [
-      { name: '-2' },
-      { name: '-1.5' },
-      { name: '-1' },
-      { name: '-0.5' },
-      { name: '0' },
-      { name: '0.5' },
-      { name: '1.0' },
-      { name: '1.5' },
-      { name: '2.0' },
-    ];
-    this.selectedValueY = 0;
+    this.values = ['-2', '-1.5', '-1', '-0.5', '0', '0.5', '1.0', '1.5', '2.0'];
   }
 
   ngOnInit() {
@@ -72,7 +66,7 @@ export class MainComponent implements OnInit {
 
     for (let i = 0; i < this.values.length; i++) {
       let value = this.values[i];
-      if (value.name.indexOf(query.toLowerCase()) == 0) {
+      if (value.indexOf(query.toLowerCase()) == 0) {
         filtered.push(value);
       }
     }
@@ -85,10 +79,35 @@ export class MainComponent implements OnInit {
 
     for (let i = 0; i < this.values.length; i++) {
       let value = this.values[i];
-      if (value.name.indexOf(query.toLowerCase()) == 0) {
+      if (value.indexOf(query.toLowerCase()) == 0) {
         filtered.push(value);
       }
     }
     this.filteredValuesR = filtered;
   }
+
+  checkInput() {
+    const valueX = parseFloat(this.selectedValueX);
+    const valueY = parseFloat(this.selectedValueY);
+    const valueR = parseFloat(this.selectedValueR);
+    if (this.selectedValueX.length > 10 || this.selectedValueY.length > 10 || this.selectedValueR.length > 10){
+      this.errorMessage = "Max length is 10!";
+      this.isTextVisible = true;
+    }else if((isNaN(valueX) || valueX < -2 || valueX > 2) && this.selectedValueX != ""){
+      this.errorMessage = "Something wrong with X!";
+      this.isTextVisible = true;
+    }else if((isNaN(valueY) || valueY < -5 || valueY > 3) && this.selectedValueY != ""){
+      this.errorMessage = "Something wrong with Y!";
+      this.isTextVisible = true;
+    }else if((isNaN(valueR) || valueR < -2 || valueR > 2) && this.selectedValueR != ""){
+      this.errorMessage = "Something wrong with R!";
+      this.isTextVisible = true;
+    }else {
+      this.isTextVisible = false;
+    }
+  }
+
+
+  onSubmit(){}
+
 }

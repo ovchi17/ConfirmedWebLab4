@@ -194,3 +194,7 @@ input#y{
   font-size: 20px;
   color: #ff00d7;
 }
+
+#error {
+  color: red;
+}
