@@ -1,6 +1,6 @@
 package aca98b.web4l.model.request;
 
-public class CheckHitRequest {
+public class PointRequest {
     private float x;
     private float y;
     private float r;
@@ -32,7 +32,7 @@ public class CheckHitRequest {
 
     @Override
     public String toString() {
-        return "CheckHitRequest{" +
+        return "PointRequest{" +
                 "x=" + x +
                 ", y=" + y +
                 ", r=" + r +

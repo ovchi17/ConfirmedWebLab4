@@ -1,14 +1,14 @@
 package aca98b.web4l.model;
 
 import aca98b.web4l.model.entity.ResultEntity;
-import aca98b.web4l.model.request.CheckHitRequest;
+import aca98b.web4l.model.request.PointRequest;
 
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZoneId;
 
 public class Result implements Serializable {
-    private CheckHitRequest request;
+    private PointRequest request;
     private boolean result;
     private Instant time;
     private long executionTime;
@@ -17,11 +17,11 @@ public class Result implements Serializable {
         super();
     }
 
-    public CheckHitRequest getRequest() {
+    public PointRequest getRequest() {
         return request;
     }
 
-    public void setRequest(CheckHitRequest request) {
+    public void setRequest(PointRequest request) {
         this.request = request;
     }
 
@@ -61,11 +61,11 @@ public class Result implements Serializable {
 
     public static Result fromEntity (ResultEntity entity) {
         final Result result = new Result();
-        final CheckHitRequest checkHitRequest = new CheckHitRequest();
-        checkHitRequest.setX(entity.getX());
-        checkHitRequest.setY(entity.getY());
-        checkHitRequest.setR(entity.getR());
-        result.setRequest(checkHitRequest);
+        final PointRequest pointRequest = new PointRequest();
+        pointRequest.setX(entity.getX());
+        pointRequest.setY(entity.getY());
+        pointRequest.setR(entity.getR());
+        result.setRequest(pointRequest);
         result.setResult(entity.isResult());
         result.setTime(entity.getTime().atZone(ZoneId.systemDefault()).toInstant());
         result.setExecutionTime(entity.getExecutionTime());
