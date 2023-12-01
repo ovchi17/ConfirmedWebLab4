@@ -20,4 +20,10 @@ export class DataService {
 
     return this.httpClient.post(url, data);
   }
+
+  logoutUser(data: any): Observable<any> {
+    const url = `${this.baseUrl}/logout`;
+
+    return this.httpClient.post(url, data);
+  }
 }

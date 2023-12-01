@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {DataService} from "../../data.service";
+import {ElementService} from "../../element.service";
+import {Data} from "../../data";
+import {Element} from "../../element";
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -23,18 +27,14 @@ export class MainComponent implements OnInit {
 
   modelList: MyModel[] = [];
   values: string[] = [];
-  // @ts-ignore
-  selectedValueX: string = "";
-  // @ts-ignore
-  selectedValueY: string = "";
-  // @ts-ignore
-  selectedValueR: string = "";
   filteredValuesX: any[] = [];
   filteredValuesR: any[] = [];
   isTextVisible = false;
   errorMessage = "";
+  data: Data = new Data();
+  element: Element = new Element();
 
-  constructor() {
+  constructor(private dataService: DataService, private elementService: ElementService) {
     this.modelList = [
       {
         result: "Result 1",
@@ -87,19 +87,19 @@ export class MainComponent implements OnInit {
   }
 
   checkInput() {
-    const valueX = parseFloat(this.selectedValueX);
-    const valueY = parseFloat(this.selectedValueY);
-    const valueR = parseFloat(this.selectedValueR);
-    if (this.selectedValueX.length > 10 || this.selectedValueY.length > 10 || this.selectedValueR.length > 10){
+    const valueX = parseFloat(this.element.x);
+    const valueY = parseFloat(this.element.y);
+    const valueR = parseFloat(this.element.r);
+    if (this.element.x.length > 10 || this.element.y.length > 10 || this.element.r.length > 10){
       this.errorMessage = "Max length is 10!";
       this.isTextVisible = true;
-    }else if((isNaN(valueX) || valueX < -2 || valueX > 2) && this.selectedValueX != ""){
+    }else if((isNaN(valueX) || valueX < -2 || valueX > 2) && this.element.x != ""){
       this.errorMessage = "Something wrong with X!";
       this.isTextVisible = true;
-    }else if((isNaN(valueY) || valueY < -5 || valueY > 3) && this.selectedValueY != ""){
+    }else if((isNaN(valueY) || valueY < -5 || valueY > 3) && this.element.y != ""){
       this.errorMessage = "Something wrong with Y!";
       this.isTextVisible = true;
-    }else if((isNaN(valueR) || valueR < -2 || valueR > 2) && this.selectedValueR != ""){
+    }else if((isNaN(valueR) || valueR < -2 || valueR > 2) && this.element.r != ""){
       this.errorMessage = "Something wrong with R!";
       this.isTextVisible = true;
     }else {
@@ -107,7 +107,16 @@ export class MainComponent implements OnInit {
     }
   }
 
-
-  onSubmit(){}
+  clearModel(){
+    this.modelList.splice(0, this.modelList.length);
+  }
+  onSubmit(){
+    if (!this.isTextVisible){
+      console.log(this.element);
+      this.elementService.addElement(this.element);
+    }else{
+      console.log("error");
+    }
+  }
 
 }

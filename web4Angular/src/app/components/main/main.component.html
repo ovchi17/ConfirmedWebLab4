@@ -57,17 +57,17 @@
           <br>
           <div class="x-input" id="x-input">
             <label>Choose X value:</label>
-            <p-autoComplete [(ngModel)]="selectedValueX" [dropdown]="true" [suggestions]="filteredValuesX" (completeMethod)="filterValX($event)" (input)="checkInput()" id="xAuto" [ngModelOptions]="{standalone: true}"></p-autoComplete>
+            <p-autoComplete [(ngModel)]="element.x" [dropdown]="true" [suggestions]="filteredValuesX" (completeMethod)="filterValX($event)" (input)="checkInput()" id="xAuto" [ngModelOptions]="{standalone: true}"></p-autoComplete>
           </div>
           <br/>
           <div class="y-input" id="y-input">
             <label>Choose Y value:</label>
-            <input type="text" pInputText placeholder="-5 to 3" [(ngModel)]="selectedValueY" [ngModelOptions]="{standalone: true}" (input)="checkInput()"/>
+            <input type="text" pInputText placeholder="-5 to 3" [(ngModel)]="element.y" [ngModelOptions]="{standalone: true}" (input)="checkInput()"/>
           </div>
           <br/>
           <div class="r-input" id="r-input">
             <label>Choose R value:</label>
-            <p-autoComplete [(ngModel)]="selectedValueR" [dropdown]="true" [suggestions]="filteredValuesR" (completeMethod)="filterValR($event)" id="rAuto" [ngModelOptions]="{standalone: true}" (input)="checkInput()"></p-autoComplete>
+            <p-autoComplete [(ngModel)]="element.r" [dropdown]="true" [suggestions]="filteredValuesR" (completeMethod)="filterValR($event)" id="rAuto" [ngModelOptions]="{standalone: true}" (input)="checkInput()"></p-autoComplete>
           </div>
         </div>
         <button type="submit" value="Confirm" class="bigButtons">Submit</button>
@@ -82,8 +82,8 @@
 <br>
 <div id="resultTable">
   <button class="bigButtons" routerLink="/">StartPage</button>
-  <button class="bigButtons">Clear</button>
-
+  <button class="bigButtons">Logout</button>
+  <button class="bigButtons" (click)="clearModel()">Clear</button>
   <table id="table">
     <thead>
     <tr>
