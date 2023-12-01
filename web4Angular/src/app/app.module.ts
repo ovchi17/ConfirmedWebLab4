@@ -16,6 +16,7 @@ import { RegistrationComponent} from "./components/registration/registration.com
 import { MainComponent} from "./components/main/main.component";
 import {RouterModule, Routes} from "@angular/router";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
 const appRoutes: Routes = [
   { path: '', component: StartComponent },
@@ -38,6 +39,7 @@ const appRoutes: Routes = [
     FormsModule,
     AppRoutingModule,
     TableModule,
+    HttpClientModule,
     KeyFilterModule,
     InputTextModule,
     BrowserAnimationsModule,
