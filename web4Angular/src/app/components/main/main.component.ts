@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2, ViewChild, AfterViewInit } from '@angular/core';
 import {DataService} from "../../data.service";
 import {ElementService} from "../../element.service";
 import {Data} from "../../data";
@@ -23,7 +23,7 @@ interface MyModel {
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, AfterViewInit {
 
   modelList: MyModel[] = [];
   values: string[] = [];
@@ -34,7 +34,73 @@ export class MainComponent implements OnInit {
   data: Data = new Data();
   element: Element = new Element();
 
-  constructor(private dataService: DataService, private elementService: ElementService) {
+  @ViewChild('svgElement') svgElement!: ElementRef<SVGSVGElement>;
+
+  ngAfterViewInit(): void {
+    this.setupSvgClickEvent();
+  }
+
+  private setupSvgClickEvent(): void {
+    this.renderer.listen(this.svgElement.nativeElement, 'click', (event: MouseEvent) => {
+      const R_button = this.element.r;
+      const x = event.offsetX;
+      const y = event.offsetY;
+      const R = R_button;
+
+      if (this.isTextVisible == false && R != "" && Number(R) > 0){
+        const normalizedX = (((x - 200) * 2 * Number(R)) / 300).toFixed(2);
+        const normalizedY = (((200 - y) * 2 * Number(R)) / 300).toFixed(2);
+
+        const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+
+        point.setAttribute('cx', String(x));
+        point.setAttribute('cy', String(y));
+        point.setAttribute('r', '3');
+        point.setAttribute('class', 'graph-point');
+
+        const checkStatus = this.checker(Number(normalizedX), Number(normalizedY), Number(R));
+
+        if (checkStatus) {
+          point.setAttribute('fill', 'white');
+        } else {
+          point.setAttribute('fill', '#e42575');
+        }
+
+        this.renderer.appendChild(this.svgElement.nativeElement, point);
+
+        console.log(`x: ${x}, normX: ${normalizedX}`);
+        console.log(`y: ${y}, normY: ${normalizedY}`);
+        console.log(Number(R));
+      }else{
+        console.log("R problem");
+      }
+    });
+  }
+
+  private checker(x: number, y: number, r: number): boolean {
+    let resultF = false;
+
+    if (x <= 0 && y >= 0) {
+      if (y <= r/2 && x >= -1 * r) {
+        resultF = true;
+      }
+    }
+
+    if (x <= 0 && y <= 0) {
+      if (x >= -r && y >= -r && Number(x) + Number(y) >= -r) {
+        resultF = true;
+      }
+    }
+
+    if (x >= 0 && y >= 0) {
+      if (x <= r / 2 && y <= r / 2 && (Math.pow(x, 2) + Math.pow(y, 2) <= Math.pow(r / 2, 2))) {
+        resultF = true;
+      }
+    }
+
+    return resultF;
+  }
+  constructor(private dataService: DataService, private elementService: ElementService, private renderer: Renderer2) {
     this.modelList = [
       {
         result: "Result 1",
@@ -113,7 +179,14 @@ export class MainComponent implements OnInit {
   onSubmit(){
     if (!this.isTextVisible){
       console.log(this.element);
-      this.elementService.addElement(this.element);
+      this.elementService.addElement(this.element).subscribe(
+        (response) => {
+          console.log('Data sent successfully', response);
+        },
+        (error) => {
+          console.error('Error sending data', error);
+        }
+      );
     }else{
       console.log("error");
     }
