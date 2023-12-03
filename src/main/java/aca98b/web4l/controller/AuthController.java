@@ -3,11 +3,10 @@ package aca98b.web4l.controller;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.time.format.DateTimeFormatter;
 
+import aca98b.web4l.model.response.AuthResponse;
 import aca98b.web4l.model.response.Response;
 import aca98b.web4l.model.UserEntity;
-import aca98b.web4l.service.implementation.ElementServiceImplementation;
 import aca98b.web4l.service.implementation.UserServiceImplementation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,87 +21,83 @@ public class AuthController {
     private final UserServiceImplementation userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Response> registerUser(@RequestBody UserEntity userEntity) throws IOException {
+    public ResponseEntity<AuthResponse> registerUser(@RequestBody UserEntity userEntity) throws IOException {
         if(userService.register(userEntity)){
             userService.verify(userEntity);
             return ResponseEntity.ok(
-                        Response.builder()
+                        AuthResponse.builder()
                                 .timeStamp(LocalDateTime.now())
-                                .data(Map.of("logged in", true))
-                                .message("user logged in")
+                                .message("user registered")
                                 .status(HttpStatus.OK)
                                 .statusCode(HttpStatus.OK.value())
+                                .sessionId("test")
+                                .sessionIdNonExpired(true)
                                 .build()
                 );
-//            return ResponseEntity.ok(
-//                Response.builder()
-//                        .timeStamp(LocalDateTime.now())
-//                        .data(Map.of("user", true))
-//                        .message("user registred")
-//                        .status(HttpStatus.CREATED)
-//                        .statusCode(HttpStatus.CREATED.value())
-//                        .build()
-//
-//                );
         } else {
             return ResponseEntity.badRequest().body(
-                Response.builder()
-                        .timeStamp(LocalDateTime.now())
-                        .data(Map.of("user", false))
-                        .message("username taken")
-                        .status(HttpStatus.CONFLICT)
-                        .statusCode(HttpStatus.CONFLICT.value())
-                        .build()
+                    AuthResponse.builder()
+                            .timeStamp(LocalDateTime.now())
+                            .message("username taken")
+                            .status(HttpStatus.CONFLICT)
+                            .statusCode(HttpStatus.CONFLICT.value())
+                            .sessionId("test")
+                            .sessionIdNonExpired(false)
+                            .build()
 
-                );
+            );
         }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Response> loginUser(@RequestBody UserEntity userEntity){
+    public ResponseEntity<AuthResponse> loginUser(@RequestBody UserEntity userEntity){
         if(userService.verify(userEntity)){
             return ResponseEntity.ok(
-            Response.builder()
+            AuthResponse.builder()
                     .timeStamp(LocalDateTime.now())
-                    .data(Map.of("logged in", true))
                     .message("user logged in")
                     .status(HttpStatus.OK)
                     .statusCode(HttpStatus.OK.value())
+                    .sessionId("test")
+                    .sessionIdNonExpired(true)
                     .build()
             );
         } else {
             return ResponseEntity.badRequest().body(
-            Response.builder()
+            AuthResponse.builder()
                     .timeStamp(LocalDateTime.now())
-                    .data(Map.of("logged in", false))
                     .message("incorrect password or login")
                     .status(HttpStatus.UNAUTHORIZED)
                     .statusCode(HttpStatus.UNAUTHORIZED.value())
+                    .sessionId(null)
+                    .sessionIdNonExpired(false)
                     .build()
             );
         }
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity<?> logout(@RequestBody UserEntity userEntity) {
+    public ResponseEntity<AuthResponse> logout(@RequestBody UserEntity userEntity) {
         if(userService.logout(userEntity)){
             return ResponseEntity.ok(
-                    Response.builder()
+                    AuthResponse.builder()
                             .timeStamp(LocalDateTime.now())
-                            .data(Map.of("logged out", true))
-                            .message("user logged put")
+                            .message("user logged out")
                             .status(HttpStatus.OK)
                             .statusCode(HttpStatus.OK.value())
+                            .sessionId("test")
+                            .sessionIdNonExpired(false)
                             .build()
             );
         } else {
             return ResponseEntity.badRequest().body(
-                    Response.builder()
+                    AuthResponse.builder()
                             .timeStamp(LocalDateTime.now())
-                            .data(Map.of("logged in", false))
-                            .message("incorrect password or login")
+                            .message("non authorised or session expired")
                             .status(HttpStatus.UNAUTHORIZED)
                             .statusCode(HttpStatus.UNAUTHORIZED.value())
+                            .sessionId("test")
+                            .sessionIdNonExpired(false)
                             .build()
             );
         }

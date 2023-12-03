@@ -28,10 +28,10 @@ public class PointElementEntity {
 
     private String time;
 
-    @Column("exec_time")
+    @Column("execution_time")
     private String executionTime;
 
     @ManyToOne
-    @JoinColumn(name = "owner")
+    @JoinColumn(name = "owner_id")
     private UserEntity owner;
 }

@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     compileOnly('jakarta.servlet:jakarta.servlet-api:6.0.0')
     implementation('jakarta.annotation:jakarta.annotation-api:2.1.1')
     implementation('org.springframework:spring-context:6.0.13')
