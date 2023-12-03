@@ -1,13 +1,15 @@
 package aca98b.web4l.service;
 
-import aca98b.web4l.model.Element;
+import aca98b.web4l.model.PointElementEntity;
 
 import java.util.Collection;
+import java.util.Optional;
 
 
 public interface ElementService {
-    Element create(Element element);
-    Collection<Element> list();
+    PointElementEntity create(PointElementEntity pointElementEntity);
+    Optional<PointElementEntity> get(Long id);
+    Collection<PointElementEntity> list();
     void delete(Long id);
     void clearTable();
 }

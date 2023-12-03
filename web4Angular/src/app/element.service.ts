@@ -6,12 +6,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ElementService {
-  private baseUrl = 'http://localhost:4200/app';
+  private baseUrl = 'http://localhost:8080/api';
 
   constructor(private httpClient: HttpClient) {}
 
   addElement(element: any): Observable<any> {
-    const url = `${this.baseUrl}/add`;
+    const url = `${this.baseUrl}/check_area`;
 
     return this.httpClient.post(url, element);
   }

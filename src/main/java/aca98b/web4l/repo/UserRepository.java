@@ -1,13 +1,16 @@
 package aca98b.web4l.repo;
 
-import aca98b.web4l.model.User;
+import aca98b.web4l.model.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface UserRepository extends CrudRepository<User, String> {
-    User findByLogin(String login);
-    void deleteByLogin(String login);
+public interface UserRepository extends CrudRepository<UserEntity, String> {
+    UserEntity findByUsername(String login);
+    void deleteByUsername(String login);
+    boolean existsByUsername (String username);
+    boolean existsBySessionID (String sessionID);
+    boolean sessionIdNonExpired (boolean isSessionIdNonExpired);
     boolean existsByPassword(String password);
 }

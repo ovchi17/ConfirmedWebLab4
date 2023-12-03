@@ -1,4 +1,4 @@
-package aca98b.web4l.model;
+package aca98b.web4l.model.response;
 
 import java.time.LocalDateTime;
 import java.util.Map;
