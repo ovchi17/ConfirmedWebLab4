@@ -47,7 +47,8 @@ const appRoutes: Routes = [
     DropdownModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -35,6 +35,7 @@ export class RegistrationComponent {
     console.log(this.dataRegister);
     this.dataService.registerUser(this.dataRegister).subscribe(
       (response) => {
+        localStorage.setItem('username', this.loginValue) // в пасс закидываем ключ
         console.log('Data sent successfully', response);
       },
       (error) => {

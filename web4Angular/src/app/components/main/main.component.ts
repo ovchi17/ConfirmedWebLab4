@@ -26,7 +26,8 @@ interface MyModel {
 export class MainComponent implements OnInit, AfterViewInit {
 
   modelList: MyModel[] = [];
-  values: string[] = [];
+  valuesX: string[] = [];
+  valuesR: string[] = [];
   filteredValuesX: any[] = [];
   filteredValuesR: any[] = [];
   isTextVisible = false;
@@ -47,30 +48,17 @@ export class MainComponent implements OnInit, AfterViewInit {
       const y = event.offsetY;
       const R = R_button;
 
-      if (this.isTextVisible == false && R != "" && Number(R) > 0){
+      if (!this.isTextVisible && R != "" && Number(R) > 0){
         const normalizedX = (((x - 200) * 2 * Number(R)) / 300).toFixed(2);
         const normalizedY = (((200 - y) * 2 * Number(R)) / 300).toFixed(2);
-
-        const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-
-        point.setAttribute('cx', String(x));
-        point.setAttribute('cy', String(y));
-        point.setAttribute('r', '3');
-        point.setAttribute('class', 'graph-point');
-
-        const checkStatus = this.checker(Number(normalizedX), Number(normalizedY), Number(R));
-
-        if (checkStatus) {
-          point.setAttribute('fill', 'white');
-        } else {
-          point.setAttribute('fill', '#e42575');
-        }
-
-        this.renderer.appendChild(this.svgElement.nativeElement, point);
 
         console.log(`x: ${x}, normX: ${normalizedX}`);
         console.log(`y: ${y}, normY: ${normalizedY}`);
         console.log(Number(R));
+        this.element.x = normalizedX;
+        this.element.y = normalizedY;
+        this.element.r = R;
+        this.onSubmit()
       }else{
         console.log("R problem");
       }
@@ -100,6 +88,28 @@ export class MainComponent implements OnInit, AfterViewInit {
 
     return resultF;
   }
+
+  private drawPoint (normalizedX: String, normalizedY: String, R: String){
+    const point = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+
+    const x: Number = Number(normalizedX) * 300 / Number(R) / 2 + 200;
+    const y: Number = 200 - Number(normalizedY) * 300 / Number(R) / 2;
+    point.setAttribute('cx', String(x));
+    point.setAttribute('cy', String(y));
+    point.setAttribute('r', '3');
+    point.setAttribute('class', 'graph-point');
+
+    const checkStatus = this.checker(Number(normalizedX), Number(normalizedY), Number(R));
+
+    if (checkStatus) {
+      point.setAttribute('fill', 'white');
+    } else {
+      point.setAttribute('fill', '#e42575');
+    }
+
+    this.renderer.appendChild(this.svgElement.nativeElement, point);
+  }
+
   constructor(private dataService: DataService, private elementService: ElementService, private renderer: Renderer2) {
     this.modelList = [
       {
@@ -120,7 +130,8 @@ export class MainComponent implements OnInit, AfterViewInit {
       },
     ];
 
-    this.values = ['-2', '-1.5', '-1', '-0.5', '0', '0.5', '1.0', '1.5', '2.0'];
+    this.valuesX = ['-2', '-1.5', '-1', '-0.5', '0', '0.5', '1.0', '1.5', '2.0'];
+    this.valuesR = ['0.5', '1.0', '1.5', '2.0'];
   }
 
   ngOnInit() {
@@ -130,8 +141,8 @@ export class MainComponent implements OnInit, AfterViewInit {
     let filtered: any[] = [];
     let query = event.query;
 
-    for (let i = 0; i < this.values.length; i++) {
-      let value = this.values[i];
+    for (let i = 0; i < this.valuesX.length; i++) {
+      let value = this.valuesX[i];
       if (value.indexOf(query.toLowerCase()) == 0) {
         filtered.push(value);
       }
@@ -143,8 +154,8 @@ export class MainComponent implements OnInit, AfterViewInit {
     let filtered: any[] = [];
     let query = event.query;
 
-    for (let i = 0; i < this.values.length; i++) {
-      let value = this.values[i];
+    for (let i = 0; i < this.valuesR.length; i++) {
+      let value = this.valuesR[i];
       if (value.indexOf(query.toLowerCase()) == 0) {
         filtered.push(value);
       }
@@ -165,7 +176,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     }else if((isNaN(valueY) || valueY < -5 || valueY > 3) && this.element.y != ""){
       this.errorMessage = "Something wrong with Y!";
       this.isTextVisible = true;
-    }else if((isNaN(valueR) || valueR < -2 || valueR > 2) && this.element.r != ""){
+    }else if((isNaN(valueR) || valueR <= 0 || valueR > 2) && this.element.r != ""){
       this.errorMessage = "Something wrong with R!";
       this.isTextVisible = true;
     }else {
@@ -175,10 +186,30 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   clearModel(){
     this.modelList.splice(0, this.modelList.length);
+    const points = this.svgElement.nativeElement.querySelectorAll('.graph-point');
+    points.forEach(point => {
+      this.renderer.removeChild(this.svgElement.nativeElement, point);
+    });
   }
+
+  logOut(){
+    const data: Data = new Data();
+    // @ts-ignore
+    data.username = localStorage.getItem('username');
+    this.dataService.logoutUser(data).subscribe(
+      (response) => {
+        console.log('Data sent successfully', response);
+      },
+      (error) => {
+        console.error('Error sending data', error);
+      }
+    );
+  }
+
   onSubmit(){
     if (!this.isTextVisible){
       console.log(this.element);
+      this.drawPoint(this.element.x, this.element.y, this.element.r);
       this.elementService.addElement(this.element).subscribe(
         (response) => {
           console.log('Data sent successfully', response);
