@@ -1,7 +1,7 @@
 package aca98b.web4l.service.implementation;
 
 
-import aca98b.web4l.model.Element;
+import aca98b.web4l.model.PointElementEntity;
 import aca98b.web4l.repo.ElementRepository;
 import aca98b.web4l.service.ElementService;
 import org.apache.commons.compress.utils.Lists;
@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -24,13 +25,19 @@ public class ElementServiceImplementation implements ElementService {
     private final ElementRepository elementRepository;
 
     @Override
-    public Element create(Element element) {
+    public PointElementEntity create(PointElementEntity pointElementEntity) {
         log.info("creating new element");
-        return elementRepository.save(element);
+        return elementRepository.save(pointElementEntity);
     }
 
     @Override
-    public Collection<Element> list() {
+    public Optional<PointElementEntity> get (Long id) {
+        log.info("getting element");
+        return elementRepository.findById(id);
+    }
+
+    @Override
+    public Collection<PointElementEntity> list() {
         log.info("Fetching all elements");
 
         return Lists.newArrayList(elementRepository.findAll().iterator());

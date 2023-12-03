@@ -10,7 +10,7 @@ public interface UserRepository extends CrudRepository<UserEntity, String> {
     UserEntity findByUsername(String login);
     void deleteByUsername(String login);
     boolean existsByUsername (String username);
-    boolean existsBySessionID (String sessionID);
-    boolean sessionIdNonExpired (boolean isSessionIdNonExpired);
+    boolean existsBySessionId(String sessionID);
+    boolean sessionNonExpired(boolean isSessionIdNonExpired);
     boolean existsByPassword(String password);
 }

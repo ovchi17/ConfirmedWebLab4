@@ -1,6 +1,6 @@
 package aca98b.web4l.service.implementation;
 
-import aca98b.web4l.model.User;
+import aca98b.web4l.model.UserEntity;
 import aca98b.web4l.repo.UserRepository;
 import aca98b.web4l.service.UserService;
 import org.springframework.stereotype.Service;
@@ -18,35 +18,51 @@ public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public boolean verify(User user) {
-        log.info("searching for user {}", user.getLogin());
-        if(userRepository.existsById(user.getLogin())){
-            if(userRepository.existsByPassword(user.getPassword())){
+    public boolean verify(UserEntity userEntity) {
+        log.info("searching for user {}", userEntity.getUsername());
+        if(userRepository.existsByUsername(userEntity.getUsername())){
+            if(userRepository.existsByPassword(userEntity.getPassword())){
                 log.info("logged in");
                 return true;
             }
             log.info("incorrect password");
             return false;
         }
-        log.info("user {}: not found", user.getLogin());
+        log.info("user {}: not found", userEntity.getUsername());
         return false;
     }
 
     @Override
-    public boolean register(User user) {
+    public boolean register(UserEntity userEntity) {
         log.info("registering user");
-        if(userRepository.existsById(user.getLogin())){
+        if(userRepository.existsByUsername(userEntity.getUsername())){
             log.info("user already exists");
             return false;
         }
-        userRepository.save(user);
+        userRepository.save(userEntity);
         return true;
     }
 
     @Override
+    public boolean logout (UserEntity userEntity) {
+        log.info("logging out");
+        if (userRepository.existsBySessionId(userEntity.getSessionId())) {
+            if (userRepository.sessionNonExpired(userEntity.isSessionNonExpired())) {
+                log.info("logged out");
+                return true;
+            }
+            log.info("session expired");
+            return false;
+        }
+        log.info("non authorised");
+        return false;
+    }
+
+
+    @Override
     public void delete(String login) {
         log.info("deleting user {}", login);
-        userRepository.deleteByLogin(login);
+        userRepository.deleteById(login);
     }
     
 }
