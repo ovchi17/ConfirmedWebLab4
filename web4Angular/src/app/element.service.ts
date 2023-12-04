@@ -11,12 +11,12 @@ export class ElementService {
   constructor(private httpClient: HttpClient) {}
 
   addElement(element: any): Observable<any> {
-    const url = `${this.baseUrl}/check_area`;
+    const url = `${this.baseUrl}/add`;
 
     return this.httpClient.post(url, element);
   }
   getAllElements(element: any): Observable<any> {
-    const url = `${this.baseUrl}/getAll`;
+    const url = `${this.baseUrl}/list`;
 
     return this.httpClient.get(url, element);
   }

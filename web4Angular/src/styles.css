@@ -7,3 +7,8 @@ body {
   height: 100%;
   background-color: #08050a;
 }
+
+button.p-element.p-ripple.p-autocomplete-dropdown.p-button-icon-only.p-button.p-component.ng-star-inserted{
+  background: #e42575;
+  border-color: #e42575;
+}

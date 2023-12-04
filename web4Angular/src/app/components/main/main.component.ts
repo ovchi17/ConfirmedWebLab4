@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Renderer2, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import {DataService} from "../../data.service";
 import {ElementService} from "../../element.service";
 import {Data} from "../../data";
@@ -23,7 +23,7 @@ interface MyModel {
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit, AfterViewInit {
+export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
 
   modelList: MyModel[] = [];
   valuesX: string[] = [];
@@ -34,7 +34,6 @@ export class MainComponent implements OnInit, AfterViewInit {
   errorMessage = "";
   data: Data = new Data();
   element: Element = new Element();
-
   @ViewChild('svgElement') svgElement!: ElementRef<SVGSVGElement>;
 
   ngAfterViewInit(): void {
@@ -135,6 +134,11 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.loadAll()
+  }
+
+  ngOnDestroy() {
+    console.log("destroy everything");
   }
 
   filterValX(event: AutoCompleteCompleteEvent) {
@@ -205,6 +209,10 @@ export class MainComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
+  loadAll(){
+    console.log("Load all points");
+}
 
   onSubmit(){
     if (!this.isTextVisible){
