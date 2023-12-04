@@ -2,11 +2,9 @@ package aca98b.web4l.controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 import aca98b.web4l.model.response.AuthResponse;
-import aca98b.web4l.model.response.Response;
-import aca98b.web4l.model.UserEntity;
+import aca98b.web4l.model.entities.User;
 import aca98b.web4l.service.implementation.UserServiceImplementation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +19,9 @@ public class AuthController {
     private final UserServiceImplementation userService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> registerUser(@RequestBody UserEntity userEntity) throws IOException {
-        if(userService.register(userEntity)){
-            userService.verify(userEntity);
+    public ResponseEntity<AuthResponse> registerUser(@RequestBody User user) throws IOException {
+        if(userService.register(user)){
+            userService.verify(user);
             return ResponseEntity.ok(
                         AuthResponse.builder()
                                 .timeStamp(LocalDateTime.now())
@@ -50,8 +48,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> loginUser(@RequestBody UserEntity userEntity){
-        if(userService.verify(userEntity)){
+    public ResponseEntity<AuthResponse> loginUser(@RequestBody User user){
+        if(userService.verify(user)){
             return ResponseEntity.ok(
             AuthResponse.builder()
                     .timeStamp(LocalDateTime.now())
@@ -77,8 +75,8 @@ public class AuthController {
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity<AuthResponse> logout(@RequestBody UserEntity userEntity) {
-        if(userService.logout(userEntity)){
+    public ResponseEntity<AuthResponse> logout(@RequestBody User user) {
+        if(userService.logout(user)){
             return ResponseEntity.ok(
                     AuthResponse.builder()
                             .timeStamp(LocalDateTime.now())

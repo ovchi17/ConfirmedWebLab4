@@ -1,6 +1,5 @@
 package aca98b.web4l.model.response;
 
-import aca98b.web4l.model.PointElementEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

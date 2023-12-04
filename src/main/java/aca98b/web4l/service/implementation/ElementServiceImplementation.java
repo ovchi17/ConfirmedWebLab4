@@ -1,8 +1,8 @@
 package aca98b.web4l.service.implementation;
 
 
-import aca98b.web4l.model.PointElementEntity;
-import aca98b.web4l.repo.ElementRepository;
+import aca98b.web4l.model.entities.PointElement;
+import aca98b.web4l.model.repo.ElementRepository;
 import aca98b.web4l.service.ElementService;
 import org.apache.commons.compress.utils.Lists;
 import org.springframework.stereotype.Service;
@@ -25,19 +25,19 @@ public class ElementServiceImplementation implements ElementService {
     private final ElementRepository elementRepository;
 
     @Override
-    public PointElementEntity create(PointElementEntity pointElementEntity) {
+    public PointElement create(PointElement pointElement) {
         log.info("creating new element");
-        return elementRepository.save(pointElementEntity);
+        return elementRepository.save(pointElement);
     }
 
     @Override
-    public Optional<PointElementEntity> get (Long id) {
+    public Optional<PointElement> get (Long id) {
         log.info("getting element");
         return elementRepository.findById(id);
     }
 
     @Override
-    public Collection<PointElementEntity> list() {
+    public Collection<PointElement> list() {
         log.info("Fetching all elements");
 
         return Lists.newArrayList(elementRepository.findAll().iterator());

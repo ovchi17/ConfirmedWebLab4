@@ -1,7 +1,7 @@
 package aca98b.web4l.service.implementation;
 
-import aca98b.web4l.model.UserEntity;
-import aca98b.web4l.repo.UserRepository;
+import aca98b.web4l.model.entities.User;
+import aca98b.web4l.model.repo.UserRepository;
 import aca98b.web4l.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,36 +18,36 @@ public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public boolean verify(UserEntity userEntity) {
-        log.info("searching for user {}", userEntity.getUsername());
-        if(userRepository.existsByUsername(userEntity.getUsername())){
-            if(userRepository.existsByPassword(userEntity.getPassword())){
+    public boolean verify(User user) {
+        log.info("searching for user {}", user.getUsername());
+        if(userRepository.existsByUsername(user.getUsername())){
+            if(userRepository.existsByPassword(user.getPassword())){
                 log.info("logged in");
                 return true;
             }
             log.info("incorrect password");
             return false;
         }
-        log.info("user {}: not found", userEntity.getUsername());
+        log.info("user {}: not found", user.getUsername());
         return false;
     }
 
     @Override
-    public boolean register(UserEntity userEntity) {
+    public boolean register(User user) {
         log.info("registering user");
-        if(userRepository.existsByUsername(userEntity.getUsername())){
+        if(userRepository.existsByUsername(user.getUsername())){
             log.info("user already exists");
             return false;
         }
-        userRepository.save(userEntity);
+        userRepository.save(user);
         return true;
     }
 
     @Override
-    public boolean logout (UserEntity userEntity) {
+    public boolean logout (User user) {
         log.info("logging out");
-        if (userRepository.existsBySessionId(userEntity.getSessionId())) {
-            if (userRepository.sessionNonExpired(userEntity.isSessionNonExpired())) {
+        if (userRepository.existsBySessionId(user.getSessionId())) {
+            if (userRepository.sessionNonExpired(user.isSessionNonExpired())) {
                 log.info("logged out");
                 return true;
             }

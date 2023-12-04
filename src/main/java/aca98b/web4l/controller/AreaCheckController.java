@@ -1,10 +1,8 @@
 package aca98b.web4l.controller;
 
-import aca98b.web4l.model.PointElementEntity;
+import aca98b.web4l.model.entities.PointElement;
 import aca98b.web4l.model.response.PointsResponse;
-import aca98b.web4l.model.response.Response;
 import aca98b.web4l.service.implementation.ElementServiceImplementation;
-import aca98b.web4l.service.implementation.UserServiceImplementation;
 import aca98b.web4l.utils.AreaCheck;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,22 +22,22 @@ public class AreaCheckController {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @PostMapping("/add")
-    public ResponseEntity<PointsResponse> checkArea(@RequestBody PointElementEntity pointElementEntity){
+    public ResponseEntity<PointsResponse> checkArea(@RequestBody PointElement pointElement){
 
         LocalTime curTime = LocalTime.now();
         String currentTime = curTime.format(formatter);
         long scriptStart = System.nanoTime();
-        boolean result = AreaCheck.check(pointElementEntity.getX(), pointElementEntity.getY(), pointElementEntity.getR());
+        boolean result = AreaCheck.check(pointElement.getX(), pointElement.getY(), pointElement.getR());
         String scriptTime = String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001);
-        pointElementEntity.setTime(currentTime);
-        pointElementEntity.setExecutionTime(scriptTime);
-        pointElementEntity.setResult(result);
+        pointElement.setTime(currentTime);
+        pointElement.setExecutionTime(scriptTime);
+        pointElement.setResult(result);
 
 
         return ResponseEntity.ok(
                 PointsResponse.builder()
                         .timeStamp(LocalDateTime.now())
-                        .pointsData(Map.of("point", elementService.create(pointElementEntity)))
+                        .pointsData(Map.of("point", elementService.create(pointElement)))
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())
                         .build()

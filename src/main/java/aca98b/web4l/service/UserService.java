@@ -1,11 +1,11 @@
 package aca98b.web4l.service;
 
 
-import aca98b.web4l.model.UserEntity;
+import aca98b.web4l.model.entities.User;
 
 public interface UserService{
-    boolean verify(UserEntity userEntity);
-    boolean register(UserEntity userEntity);
-    boolean logout(UserEntity userEntity);
+    boolean verify(User user);
+    boolean register(User user);
+    boolean logout(User user);
     void delete(String login);
 } 

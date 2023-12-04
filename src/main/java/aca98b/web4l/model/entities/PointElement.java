@@ -1,4 +1,4 @@
-package aca98b.web4l.model;
+package aca98b.web4l.model.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.data.relational.core.mapping.Column;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PointElementEntity {
+public class PointElement {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator ="points_id_seq")
@@ -33,5 +33,5 @@ public class PointElementEntity {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    private UserEntity owner;
+    private User owner;
 }
