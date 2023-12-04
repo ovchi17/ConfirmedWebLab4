@@ -7,5 +7,5 @@ public interface UserService{
     boolean verify(User user);
     boolean register(User user);
     boolean logout(User user);
-    void delete(String login);
-} 
+    void delete(Long id);
+}

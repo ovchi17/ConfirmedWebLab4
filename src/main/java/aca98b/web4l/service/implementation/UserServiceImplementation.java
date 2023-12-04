@@ -60,9 +60,9 @@ public class UserServiceImplementation implements UserService {
 
 
     @Override
-    public void delete(String login) {
-        log.info("deleting user {}", login);
-        userRepository.deleteById(login);
+    public void delete(Long id) {
+        log.info("deleting user {}", id);
+        userRepository.deleteById(id);
     }
     
 }
