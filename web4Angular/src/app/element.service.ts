@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,17 +13,33 @@ export class ElementService {
   addElement(element: any): Observable<any> {
     const url = `${this.baseUrl}/add`;
 
-    return this.httpClient.post(url, element);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem("sessionId")}`
+    });
+
+    return this.httpClient.post(url, element, { headers });
+
   }
   getAllElements(element: any): Observable<any> {
     const url = `${this.baseUrl}/list`;
 
-    return this.httpClient.get(url, element);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem("sessionId")}`
+    });
+
+    return this.httpClient.post(url, element, { headers });
   }
 
   clearAllElements(element: any): Observable<any> {
     const url = `${this.baseUrl}/clearAll`;
 
-    return this.httpClient.post(url, element);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem("sessionId")}`
+    });
+
+    return this.httpClient.post(url, element, { headers });
   }
 }

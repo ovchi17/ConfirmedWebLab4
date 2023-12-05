@@ -35,8 +35,8 @@ export class LoginComponent {
     this.dataService.loginUser(this.dataLogin).subscribe(
         (response) => {
           this.isTextVisible = false;
-          localStorage.setItem('username', this.dataLogin.username)
-          localStorage.setItem('sessionId', "sydanadobydetetotidisresponsa")
+          localStorage.setItem('username', this.dataLogin.username);
+          localStorage.setItem('sessionId', response.headers.get('jwt'));
           console.log('Data sent successfully', response);
         },
         (error) => {
