@@ -1,11 +1,12 @@
 package aca98b.web4l.model.response;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @Data
-@SuperBuilder
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class AuthResponse extends Response {
     String sessionId;
