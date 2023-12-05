@@ -15,6 +15,7 @@ export class DataService {
 
     return this.httpClient.post(url, data);
   }
+
   loginUser(data: any): Observable<any> {
     const url = `${this.baseUrl}/login`;
 
