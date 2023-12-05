@@ -1,9 +1,8 @@
 <div class="workZone">
   <div class="container">
-    <div class="XYcoord">
-      <div id="coordinatePanelWrapper"
-                     style="position: relative; margin-top: 10px; margin-left: 70px;">
-        <div id="coordinatePanel" style="position: absolute; width: 400px; height: 400px;">
+    <div class="item">
+      <div id="coordinatePanelWrapper">
+        <div id="coordinatePanel" style="width: 400px; height: 400px; display: block; margin-left: auto; margin-right: auto">
           <svg #svgElement width="400" height="400">
             <line x1="0" y1="200" x2="400" y2="200" stroke="white" stroke-width="2"/>
             <line x1="200" y1="0" x2="200" y2="400" stroke="white" stroke-width="2"/>
@@ -51,7 +50,7 @@
         </div>
       </div>
     </div>
-    <form id="simpleForm" (ngSubmit)="onSubmit()" #myForm="ngForm">
+    <form class="item" (ngSubmit)="onSubmit()" #myForm="ngForm">
       <div id="form">
         <div id="structForm">
           <br>

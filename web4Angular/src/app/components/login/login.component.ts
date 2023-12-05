@@ -33,13 +33,16 @@ export class LoginComponent {
   tryLogin(){
     console.log(this.dataLogin);
     this.dataService.loginUser(this.dataLogin).subscribe(
-      (response) => {
-        localStorage.setItem('username', this.loginValue) // в пасс закидываем ключ
-        console.log('Data sent successfully', response);
-      },
-      (error) => {
-        console.error('Error sending data', error);
-      }
+        (response) => {
+          this.isTextVisible = false;
+          localStorage.setItem('username', this.dataLogin.username)
+          localStorage.setItem('sessionId', "sydanadobydetetotidisresponsa")
+          console.log('Data sent successfully', response);
+        },
+        (error) => {
+          this.errorMessage = 'Something went wrong, try again.';
+          this.isTextVisible = true;
+        }
     );
   }
 

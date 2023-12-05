@@ -35,11 +35,14 @@ export class RegistrationComponent {
     console.log(this.dataRegister);
     this.dataService.registerUser(this.dataRegister).subscribe(
       (response) => {
-        localStorage.setItem('username', this.loginValue) // в пасс закидываем ключ
+        this.isTextVisible = false;
+        localStorage.setItem('username', this.dataRegister.username)
+        localStorage.setItem('sessionId', "sydanadobydetetotidisresponsa")
         console.log('Data sent successfully', response);
       },
       (error) => {
-        console.error('Error sending data', error);
+        this.errorMessage = 'Something went wrong, try again.';
+        this.isTextVisible = true;
       }
     );
   }
