@@ -9,6 +9,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class AuthResponse extends Response {
-    String sessionId;
-    boolean sessionIdNonExpired;
+    String token;
+//    boolean sessionIdNonExpired;
 }

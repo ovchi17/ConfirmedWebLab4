@@ -15,9 +15,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/points")
 @RequiredArgsConstructor
-public class AreaCheckController {
+public class PointsController {
     private final ElementServiceImplementation elementService;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
