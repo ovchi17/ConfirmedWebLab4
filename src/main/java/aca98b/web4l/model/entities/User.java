@@ -3,6 +3,7 @@ package aca98b.web4l.model.entities;
 import aca98b.web4l.model.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.relational.core.mapping.Column;
@@ -13,11 +14,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Entity
-@Table(name="aca98b_users", schema="s367845")
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="aca98b_users", schema="s367845")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator ="users_id_seq")
@@ -26,7 +28,7 @@ public class User implements UserDetails {
     @Column
     private String username;
     @Column
-    private String paswword;
+    private String password;
     @Column("session_id")
     private String sessionId;
     @Column("session_non_expired")

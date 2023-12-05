@@ -1,8 +1,14 @@
 package aca98b.web4l.service.implementation;
 
+import aca98b.web4l.model.Role;
 import aca98b.web4l.model.entities.User;
 import aca98b.web4l.model.repo.UserRepository;
-import aca98b.web4l.service.UserService;
+import aca98b.web4l.model.request.AuthRequest;
+import aca98b.web4l.model.response.AuthResponse;
+import aca98b.web4l.service.JwtService;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,59 +16,52 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 
-@RequiredArgsConstructor
+@Slf4j
 @Service
 @Transactional
-@Slf4j
-public class UserServiceImplementation implements UserService {
-    private final UserRepository userRepository;
+@RequiredArgsConstructor
+public class UserServiceImplementation {
+    private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
-    @Override
-    public boolean verify(User user) {
-        log.info("searching for user {}", user.getUsername());
-        if(userRepository.existsByUsername(user.getUsername())){
-            if(userRepository.existsByPassword(user.getPassword())){
-                log.info("logged in");
-                return true;
-            }
-            log.info("incorrect password");
-            return false;
-        }
-        log.info("user {}: not found", user.getUsername());
-        return false;
+    public AuthResponse register(AuthRequest request) {
+        var user = User.builder()
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.USER)
+                .build();
+        repository.save(user);
+
+        var jwtToken = jwtService.generateToken(user);
+        return AuthResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 
-    @Override
-    public boolean register(User user) {
-        log.info("registering user");
-        if(userRepository.existsByUsername(user.getUsername())){
-            log.info("user already exists");
-            return false;
-        }
-        userRepository.save(user);
-        return true;
+    public AuthResponse authenticate(AuthRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
+        var user = repository.findByUsername(request.getUsername()).orElseThrow(); //todo: implement exception
+        var jwtToken = jwtService.generateToken(user);
+        return AuthResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 
-    @Override
-    public boolean logout (User user) {
-        log.info("logging out");
-        if (userRepository.existsBySessionId(user.getSessionId())) {
-            if (userRepository.sessionNonExpired(user.isSessionNonExpired())) {
-                log.info("logged out");
-                return true;
-            }
-            log.info("session expired");
-            return false;
-        }
-        log.info("non authorised");
-        return false;
+    public AuthResponse logout (AuthRequest request) {
+        //todo: not implemented yet
     }
 
-
-    @Override
     public void delete(Long id) {
         log.info("deleting user {}", id);
-        userRepository.deleteById(id);
+        //todo: REWRITE
+        repository.deleteById(id);
     }
     
 }
