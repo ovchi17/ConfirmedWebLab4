@@ -20,7 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="aca98b_users", schema="s367845")
-public class User implements UserDetails {
+public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator ="users_id_seq")
     @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
@@ -29,10 +29,6 @@ public class User implements UserDetails {
     private String username;
     @Column
     private String password;
-    @Column("session_id")
-    private String sessionId;
-    @Column("session_non_expired")
-    private boolean sessionNonExpired;
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -43,7 +39,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return paswword;
+        return password;
     }
 
     @Override

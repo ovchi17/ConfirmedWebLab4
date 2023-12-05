@@ -1,7 +1,6 @@
 package aca98b.web4l.model.response;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 @Data
 @Builder
@@ -9,6 +8,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class AuthResponse extends Response {
-    String token;
-//    boolean sessionIdNonExpired;
+    String jwt;
 }

@@ -2,16 +2,18 @@ package aca98b.web4l.model.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.relational.core.mapping.Column;
 
-@Entity
-@Table(name="aca98b_points", schema="s367845")
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
-public class PointElement {
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name="aca98b_points", schema="s367845")
+public class Point {
     
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator ="points_id_seq")
@@ -33,5 +35,5 @@ public class PointElement {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    private User owner;
+    private User ownerId;
 }
