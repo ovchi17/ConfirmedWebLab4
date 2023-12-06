@@ -9,6 +9,7 @@ import aca98b.web4l.model.request.PointRequest;
 import aca98b.web4l.model.response.PointResponse;
 import aca98b.web4l.utils.AreaCheck;
 import org.apache.commons.compress.utils.Lists;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -29,7 +31,7 @@ import java.util.Map;
 @Service
 @Transactional
 @Slf4j
-public class ElementService {
+public class PointService {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private final PointRepository pointRepository;
     private final UserRepository userRepository;
@@ -52,15 +54,25 @@ public class ElementService {
                 .build();
 
         return PointResponse.builder()
-                .pointsData(Map.of("point", pointRepository.save(point)))
+                .timeStamp(LocalDateTime.now())
+                .message("Point created.")
+                .status(HttpStatus.CREATED)
+                .statusCode(HttpStatus.CREATED.value())
+                .pointsData(Map.of("point", pointRepository.save(point))) //todo: hide user's password in point data in response
                 .build();
     }
 
     public PointResponse list() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
 
         return PointResponse.builder()
-                .pointsData(Map.of("point", Lists.newArrayList(pointRepository.findAll().iterator())))
+                .timeStamp(LocalDateTime.now())
+                .message("Points loaded.")
+                .status(HttpStatus.OK)
+                .statusCode(HttpStatus.OK.value())
+                .pointsData(Map.of("point", Lists.newArrayList(pointRepository
+                        .findAllByOwnerId(currentUser).iterator()))) //todo: hide user's password in point data in response
                 .build();
     }
 
@@ -71,7 +83,11 @@ public class ElementService {
         List<Point> removedPoints = Lists.newArrayList(pointRepository.findAll().iterator());
         pointRepository.deleteAllByOwnerId(userRepository.findByUsername(currentUser.getUsername()));
         return PointResponse.builder()
-                .pointsData(Map.of("cleared", removedPoints))
+                .timeStamp(LocalDateTime.now())
+                .message("Table cleared.")
+                .status(HttpStatus.OK)
+                .statusCode(HttpStatus.OK.value())
+                .pointsData(Map.of("cleared", removedPoints)) //todo: hide user's password in point data in response
                 .build();
     }
 }

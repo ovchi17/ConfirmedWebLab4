@@ -1,12 +1,25 @@
 package aca98b.web4l.model.response;
 
+
 import lombok.*;
+import org.springframework.http.HttpStatus;
+
+import java.time.LocalDateTime;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class AuthResponse extends Response {
-    String jwt;
+    private String jwt;
+
+    @Builder(builderMethodName = "authResponseBuilder")
+    public AuthResponse(LocalDateTime timeStamp, int statusCode, HttpStatus status, String message, String devMessage, String jwt) {
+        super(timeStamp, statusCode, status, message, devMessage);
+        this.jwt = jwt;
+    }
+
+    public static AuthResponseBuilder builder() {
+        return authResponseBuilder();
+    }
 }

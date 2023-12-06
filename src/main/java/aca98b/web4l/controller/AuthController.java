@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import aca98b.web4l.model.request.AuthRequest;
 import aca98b.web4l.model.response.AuthResponse;
-import aca98b.web4l.service.UserService;
+import aca98b.web4l.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,16 +14,16 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final UserService userService;
+    private final AuthService authService;
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest request) throws IOException {
-        return ResponseEntity.ok(userService.register(request));
+        return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request){
-        return ResponseEntity.ok(userService.authenticate(request));
+        return ResponseEntity.ok(authService.authenticate(request));
     }
 
 //    @DeleteMapping("/logout")
