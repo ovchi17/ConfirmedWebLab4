@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PointController {
     private final PointService pointService;
-
     @PostMapping("/add")
     public ResponseEntity<PointResponse> createPoint(@RequestBody PointRequest request) {
         return ResponseEntity.ok(pointService.create(request));
