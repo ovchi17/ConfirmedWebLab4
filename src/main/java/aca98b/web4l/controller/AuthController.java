@@ -1,6 +1,5 @@
 package aca98b.web4l.controller;
 
-import java.io.IOException;
 
 import aca98b.web4l.model.request.AuthRequest;
 import aca98b.web4l.model.response.AuthResponse;
@@ -17,7 +16,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest request) throws IOException {
+    public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest request) {
         return ResponseEntity.ok(authService.register(request));
     }
 
