@@ -37,7 +37,8 @@ export class RegistrationComponent {
       (response) => {
         this.isTextVisible = false;
         localStorage.setItem('username', this.dataRegister.username)
-        localStorage.setItem('sessionId', response.headers.get('jwt'));
+        localStorage.setItem('sessionId', response.jwt);
+        console.log(localStorage.getItem("sessionId"));
         console.log('Data sent successfully', response);
       },
       (error) => {

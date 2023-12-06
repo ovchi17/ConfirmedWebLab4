@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ElementService {
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = 'http://localhost:8080/api/v1/points';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -14,7 +14,6 @@ export class ElementService {
     const url = `${this.baseUrl}/add`;
 
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
       'Authorization': `Bearer ${localStorage.getItem("sessionId")}`
     });
 
@@ -25,18 +24,17 @@ export class ElementService {
     const url = `${this.baseUrl}/list`;
 
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem("sessionId")}`
+      'Authorization': `Bearer ${localStorage.getItem("sessionId")}`,
+      'Accept': 'application/json, text/plain, */*'
     });
 
     return this.httpClient.post(url, element, { headers });
   }
 
   clearAllElements(element: any): Observable<any> {
-    const url = `${this.baseUrl}/clearAll`;
+    const url = `${this.baseUrl}/clear`;
 
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
       'Authorization': `Bearer ${localStorage.getItem("sessionId")}`
     });
 

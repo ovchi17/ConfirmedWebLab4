@@ -194,6 +194,14 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     points.forEach(point => {
       this.renderer.removeChild(this.svgElement.nativeElement, point);
     });
+    this.elementService.clearAllElements(this.element).subscribe(
+      (response) => {
+        console.log('Data sent successfully', response);
+      },
+      (error) => {
+        console.error('Error sending data', error);
+      }
+    );
   }
 
   logOut(){

@@ -36,7 +36,7 @@ export class LoginComponent {
         (response) => {
           this.isTextVisible = false;
           localStorage.setItem('username', this.dataLogin.username);
-          localStorage.setItem('sessionId', response.headers.get('jwt'));
+          localStorage.setItem('sessionId', response.jwt);
           console.log('Data sent successfully', response);
         },
         (error) => {

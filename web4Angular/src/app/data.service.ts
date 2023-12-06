@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class DataService {
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = 'http://localhost:8080/api/v1/auth';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -17,7 +17,7 @@ export class DataService {
   }
 
   loginUser(data: any): Observable<any> {
-    const url = `${this.baseUrl}/login`;
+    const url = `${this.baseUrl}/authenticate`;
 
     return this.httpClient.post(url, data);
   }
