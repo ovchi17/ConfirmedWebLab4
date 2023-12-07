@@ -3,6 +3,7 @@ import {DataService} from "../../data.service";
 import {ElementService} from "../../element.service";
 import {Data} from "../../data";
 import {Element} from "../../element";
+import { Router } from '@angular/router';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -109,7 +110,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     this.renderer.appendChild(this.svgElement.nativeElement, point);
   }
 
-  constructor(private dataService: DataService, private elementService: ElementService, private renderer: Renderer2) {
+  constructor(private dataService: DataService, private elementService: ElementService, private renderer: Renderer2, private router: Router) {
     this.modelList = [
       {
         result: "Result 1",
@@ -134,7 +135,10 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadAll()
+    if (!localStorage.getItem('sessionId')){
+      this.router.navigate(['/']);
+    }
+    this.loadAll();
   }
 
   ngOnDestroy() {
@@ -205,17 +209,19 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   logOut(){
-    const data: Data = new Data();
+    // const data: Data = new Data();
     // @ts-ignore
-    data.username = localStorage.getItem('username');
-    this.dataService.logoutUser(data).subscribe(
-      (response) => {
-        console.log('Data sent successfully', response);
-      },
-      (error) => {
-        console.error('Error sending data', error);
-      }
-    );
+    //data.username = localStorage.getItem('username');
+    // this.dataService.logoutUser(data).subscribe(
+    //  (response) => {
+    //    console.log('Data sent successfully', response);
+    //  },
+    //  (error) => {
+    //    console.error('Error sending data', error);
+    //  }
+    //);
+    localStorage.removeItem("sessionId");
+    this.router.navigate(['/']);
   }
 
   loadAll(){

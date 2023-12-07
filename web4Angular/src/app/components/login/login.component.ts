@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core'
 import {Data} from "../../data";
 import {DataService} from "../../data.service";
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -8,14 +10,20 @@ import {DataService} from "../../data.service";
   styleUrl: './login.component.css'
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginValue: string = '';
   passwordValue: string = '';
   dataLogin: Data = new Data();
   isTextVisible: boolean = false;
   errorMessage: string = '';
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private router: Router) {
+  }
+
+  ngOnInit() {
+    if (localStorage.getItem('sessionId')){
+      this.router.navigate(['/main']);
+    }
   }
   checkInput() {
     const containsRussian = /[а-яА-Я]/.test(<string>this.dataLogin.username) || /[а-яА-Я]/.test(<string>this.dataLogin.password);
@@ -35,9 +43,15 @@ export class LoginComponent {
     this.dataService.loginUser(this.dataLogin).subscribe(
         (response) => {
           this.isTextVisible = false;
-          localStorage.setItem('username', this.dataLogin.username);
-          localStorage.setItem('sessionId', response.jwt);
-          console.log('Data sent successfully', response);
+          if (response.statusCode == 200){
+            localStorage.setItem('username', this.dataLogin.username);
+            localStorage.setItem('sessionId', response.jwt);
+            console.log('Data sent successfully', response);
+            this.router.navigate(['/main']);
+          }else{
+            this.errorMessage = response.message;
+            this.isTextVisible = true;
+          }
         },
         (error) => {
           this.errorMessage = 'Something went wrong, try again.';
