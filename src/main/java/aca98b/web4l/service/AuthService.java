@@ -86,15 +86,4 @@ public class AuthService {
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .build();
     }
-
-//    public AuthResponse logout (AuthRequest request) {
-//        //todo: not implemented yet
-//    }
-
-    public void delete(Long id) {
-        log.info("deleting user {}", id);
-        //todo: REWRITE
-        repository.deleteById(id);
-    }
-    
 }
