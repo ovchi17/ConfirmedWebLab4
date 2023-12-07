@@ -228,10 +228,25 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   onSubmit(){
     if (!this.isTextVisible){
       console.log(this.element);
-      this.drawPoint(this.element.x, this.element.y, this.element.r);
       this.elementService.addElement(this.element).subscribe(
         (response) => {
           console.log('Data sent successfully', response);
+          if (response.statusCode == 201){
+            this.drawPoint(this.element.x, this.element.y, this.element.r);
+            const pointData = response.pointsData?.point;
+            if (pointData) {
+              const point: MyModel = {
+                result: pointData.result,
+                x: pointData.x,
+                y: pointData.y,
+                r: pointData.r,
+                time: pointData.time,
+                scriptTime: pointData.executionTime
+              };
+
+              this.modelList.push(point);
+            }
+          }
         },
         (error) => {
           console.error('Error sending data', error);
