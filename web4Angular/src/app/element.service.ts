@@ -24,11 +24,10 @@ export class ElementService {
     const url = `${this.baseUrl}/list`;
 
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${localStorage.getItem("sessionId")}`,
-      'Accept': 'application/json, text/plain, */*'
+      'Authorization': `Bearer ${localStorage.getItem("sessionId")}`
     });
 
-    return this.httpClient.post(url, element, { headers });
+    return this.httpClient.get(url, { headers });
   }
 
   clearAllElements(element: any): Observable<any> {

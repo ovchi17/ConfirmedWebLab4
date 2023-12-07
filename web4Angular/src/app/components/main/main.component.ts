@@ -111,24 +111,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   constructor(private dataService: DataService, private elementService: ElementService, private renderer: Renderer2, private router: Router) {
-    this.modelList = [
-      {
-        result: "Result 1",
-        x: "X 1",
-        y: "Y 1",
-        r: "R 1",
-        time: "Time 1",
-        scriptTime: "Script Time 1",
-      },
-      {
-        result: "Result 2",
-        x: "X 2",
-        y: "Y 2",
-        r: "R 2",
-        time: "Time 2",
-        scriptTime: "Script Time 2",
-      },
-    ];
+    this.modelList = [];
 
     this.valuesX = ['-2', '-1.5', '-1', '-0.5', '0', '0.5', '1.0', '1.5', '2.0'];
     this.valuesR = ['0.5', '1.0', '1.5', '2.0'];
@@ -137,8 +120,10 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     if (!localStorage.getItem('sessionId')){
       this.router.navigate(['/']);
+    }else{
+      this.loadAll();
     }
-    this.loadAll();
+
   }
 
   ngOnDestroy() {
@@ -200,7 +185,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     });
     this.elementService.clearAllElements(this.element).subscribe(
       (response) => {
-        console.log('Data sent successfully', response);
+        console.log('cleared');
       },
       (error) => {
         console.error('Error sending data', error);
@@ -209,24 +194,36 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   logOut(){
-    // const data: Data = new Data();
-    // @ts-ignore
-    //data.username = localStorage.getItem('username');
-    // this.dataService.logoutUser(data).subscribe(
-    //  (response) => {
-    //    console.log('Data sent successfully', response);
-    //  },
-    //  (error) => {
-    //    console.error('Error sending data', error);
-    //  }
-    //);
     localStorage.removeItem("sessionId");
     this.router.navigate(['/']);
   }
 
-  loadAll(){
+  loadAll() {
     console.log("Load all points");
-}
+    this.elementService.getAllElements(this.element).subscribe(
+        (response) => {
+          console.log('Data sent successfully', response);
+          const pointsData = response.pointsData?.point || [];
+          // @ts-ignore
+          const pointsArray = pointsData.map(point => ({
+            result: point.result,
+            x: point.x,
+            y: point.y,
+            r: point.r,
+            time: point.time,
+            scriptTime: point.executionTime
+          }));
+          this.modelList = [...this.modelList, ...pointsArray];
+          this.modelList.forEach(point => {
+            this.drawPoint(point.x, point.y, point.r);
+          });
+          console.log(this.modelList);
+        },
+        (error) => {
+          console.error('Error sending data', error);
+        }
+    );
+  }
 
   onSubmit(){
     if (!this.isTextVisible){
