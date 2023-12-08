@@ -160,7 +160,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     const valueX = parseFloat(this.element.x);
     const valueY = parseFloat(this.element.y);
     const valueR = parseFloat(this.element.r);
-    if (this.element.x != "" && this.element.y != "" && this.element.r != ""){
+    if (this.element.x == "" || this.element.y == "" || this.element.r == ""){
       this.errorMessage = "X Y R must not be empty";
       this.isTextVisible = true;
     }else if (this.element.x.length > 10 || this.element.y.length > 10 || this.element.r.length > 10){
