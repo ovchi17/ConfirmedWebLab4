@@ -4,7 +4,6 @@ import {ElementService} from "../../element.service";
 import {Data} from "../../data";
 import {Element} from "../../element";
 import { Router } from '@angular/router';
-
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
   query: string;
@@ -33,6 +32,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   filteredValuesR: any[] = [];
   isTextVisible = false;
   errorMessage = "";
+  showR = "";
   data: Data = new Data();
   element: Element = new Element();
   @ViewChild('svgElement') svgElement!: ElementRef<SVGSVGElement>;
@@ -160,10 +160,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     const valueX = parseFloat(this.element.x);
     const valueY = parseFloat(this.element.y);
     const valueR = parseFloat(this.element.r);
-    if (this.element.x == "" || this.element.y == "" || this.element.r == ""){
-      this.errorMessage = "X Y R must not be empty";
-      this.isTextVisible = true;
-    }else if (this.element.x.length > 10 || this.element.y.length > 10 || this.element.r.length > 10){
+    if (this.element.x.length > 10 || this.element.y.length > 10 || this.element.r.length > 10){
       this.errorMessage = "Max length is 10!";
       this.isTextVisible = true;
     }else if((isNaN(valueX) || valueX < -2 || valueX > 2) && this.element.x != ""){
@@ -199,6 +196,24 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   logOut(){
     localStorage.removeItem("sessionId");
     this.router.navigate(['/']);
+  }
+
+  graphChange(event: any){
+    const valueR = parseFloat(this.element.r);
+    if(!((isNaN(valueR) || valueR <= 0 || valueR > 2) && this.element.r != null)){
+      const points = this.svgElement.nativeElement.querySelectorAll('.graph-point');
+      points.forEach(point => {
+        this.renderer.removeChild(this.svgElement.nativeElement, point);
+      });
+      this.modelList.forEach((el: MyModel) => {
+        console.log(el.x);
+        console.log(el.y);
+        console.log(this.element.r);
+        this.showR = valueR.toString();
+        this.drawPoint(el.x, el.y, this.element.r);
+      });
+
+    }
   }
 
   loadAll() {
