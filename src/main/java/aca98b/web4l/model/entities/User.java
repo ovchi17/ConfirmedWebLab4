@@ -3,6 +3,7 @@ package aca98b.web4l.model.entities;
 import aca98b.web4l.model.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,10 +27,14 @@ public class User implements UserDetails{
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator ="users_id_seq")
     @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
     private Long id;
+
     @Column
+    @Size(min = 3, max = 64, message = "The length of username must be between 3 and 64 characters.")
     private String username;
+
     @Column
     private String password;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

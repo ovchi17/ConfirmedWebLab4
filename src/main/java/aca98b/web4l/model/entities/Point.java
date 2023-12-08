@@ -1,6 +1,7 @@
 package aca98b.web4l.model.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class Point {
 
     private float y;
 
+    @Positive(message = "The number must be greater than zero.")
     private float r;
 
     private boolean result;
