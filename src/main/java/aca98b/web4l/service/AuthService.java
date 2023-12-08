@@ -86,4 +86,6 @@ public class AuthService {
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
                 .build();
     }
+
+    //todo: DO LOGOUT FUNCTION TO REMOVE JWT
 }

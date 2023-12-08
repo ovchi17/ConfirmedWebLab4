@@ -64,9 +64,6 @@ public class PointService {
 
             pointRepository.save(point);
 
-            currentUser.setPassword("NOT YOUR BUSINESS.");
-            point.setOwnerId(currentUser);
-
             return PointResponse.builder()
                     .timeStamp(LocalDateTime.now())
                     .message("Point created.")
@@ -89,11 +86,6 @@ public class PointService {
         User currentUser = (User) authentication.getPrincipal();
         List<Point> points = pointRepository.findAllByOwnerId(currentUser);
 
-        for (Point point : points) {
-            User owner = point.getOwnerId();
-            owner.setPassword("NOT YOUR BUSINESS");
-        }
-
         return PointResponse.builder()
                 .timeStamp(LocalDateTime.now())
                 .message("Points loaded.")
@@ -108,11 +100,6 @@ public class PointService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         List<Point> removedPoints = Lists.newArrayList(pointRepository.findAllByOwnerId(currentUser).iterator());
-
-        for (Point point : removedPoints) {
-            User owner = point.getOwnerId();
-            owner.setPassword("NOT YOUR BUSINESS");
-        }
 
         pointRepository.deleteAllByOwnerId(userRepository.findByUsername(currentUser.getUsername()));
         return PointResponse.builder()
