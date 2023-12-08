@@ -160,7 +160,10 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     const valueX = parseFloat(this.element.x);
     const valueY = parseFloat(this.element.y);
     const valueR = parseFloat(this.element.r);
-    if (this.element.x.length > 10 || this.element.y.length > 10 || this.element.r.length > 10){
+    if (this.element.x != "" && this.element.y != "" && this.element.r != ""){
+      this.errorMessage = "X Y R must not be empty";
+      this.isTextVisible = true;
+    }else if (this.element.x.length > 10 || this.element.y.length > 10 || this.element.r.length > 10){
       this.errorMessage = "Max length is 10!";
       this.isTextVisible = true;
     }else if((isNaN(valueX) || valueX < -2 || valueX > 2) && this.element.x != ""){
@@ -178,13 +181,13 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   clearModel(){
-    this.modelList.splice(0, this.modelList.length);
-    const points = this.svgElement.nativeElement.querySelectorAll('.graph-point');
-    points.forEach(point => {
-      this.renderer.removeChild(this.svgElement.nativeElement, point);
-    });
     this.elementService.clearAllElements(this.element).subscribe(
       (response) => {
+        this.modelList.splice(0, this.modelList.length);
+        const points = this.svgElement.nativeElement.querySelectorAll('.graph-point');
+        points.forEach(point => {
+          this.renderer.removeChild(this.svgElement.nativeElement, point);
+        });
         console.log('cleared');
       },
       (error) => {
