@@ -1,6 +1,7 @@
 h2 {
   margin: 0;
   padding: 0;
+  color: #f5f3f7;
 }
 
 h2:first-letter{
@@ -46,7 +47,7 @@ h2:first-letter{
 }
 
 #form {
-  height: 410px;
+  height: 450px;
   text-align: center;
   border: 5px solid #1c1326;
   padding: 20px;
@@ -58,7 +59,7 @@ h2:first-letter{
 
 @media screen and (max-width: 1256px) {
   #form {
-    height: 410px;
+    height: 450px;
     text-align: center;
     border: 4px solid #1c1326;
     padding: 16px;
@@ -71,7 +72,7 @@ h2:first-letter{
 
 @media screen and (max-width: 874px) {
   #form {
-    height: 380px;
+    height: 430px;
     text-align: center;
     border: 3px solid #1c1326;
     padding: 12px;

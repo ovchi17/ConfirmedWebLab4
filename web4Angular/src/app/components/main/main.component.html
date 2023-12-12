@@ -3,6 +3,8 @@
     <div class="item">
       <div id="coordinatePanelWrapper">
         <div id="coordinatePanel" style="width: 400px; height: 400px; display: block; margin-left: auto; margin-right: auto">
+          <h2>График R({{ showR }})</h2>
+          <br/>
           <svg #svgElement width="400" height="400">
             <line x1="0" y1="200" x2="400" y2="200" stroke="white" stroke-width="2"/>
             <line x1="200" y1="0" x2="200" y2="400" stroke="white" stroke-width="2"/>
@@ -66,7 +68,7 @@
           <br/>
           <div class="r-input" id="r-input">
             <label>Choose R value:</label>
-            <p-autoComplete [(ngModel)]="element.r" [dropdown]="true" [suggestions]="filteredValuesR" (completeMethod)="filterValR($event)" id="rAuto" [ngModelOptions]="{standalone: true}" (input)="checkInput()"></p-autoComplete>
+            <p-autoComplete [(ngModel)]="element.r" [dropdown]="true" [suggestions]="filteredValuesR" (completeMethod)="filterValR($event)" id="rAuto" [ngModelOptions]="{standalone: true}" (ngModelChange)="graphChange($event)" (input)="checkInput()"></p-autoComplete>
           </div>
         </div>
         <button type="submit" value="Confirm" class="bigButtons">Submit</button>
