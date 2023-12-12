@@ -35,84 +35,110 @@ public class PointService {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private final PointRepository pointRepository;
     private final UserRepository userRepository;
-    private final float MIN_X = -2f;
-    private final float MAX_X = 2f;
-    private final float MIN_Y = -5f;
-    private final float MAX_Y = 3f;
-    private final float MIN_R = 0f;
-    private final float MAX_R = 2f;
-
 
     public PointResponse create(PointRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();;
+        User currentUser = (User) authentication.getPrincipal();;
         String currentTime = LocalTime.now().format(formatter);
         long scriptStart = System.nanoTime();
         String validationMessage = validate(request.getX(), request.getY(), request.getR());
 
-        if (validationMessage.equals("success")) {
-            Point point = Point.builder()
-                    .x(request.getX())
-                    .y(request.getY())
-                    .r(request.getR())
-                    .result(AreaChecker.getResult(request.getX(), request.getY(), request.getR()))
-                    .time(currentTime)
-                    .executionTime(String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001))
-                    .ownerId(currentUser)
-                    .build();
+//        if (currentUser.isEnable()) {
+            if (validationMessage.equals("success")) {
+                Point point = Point.builder()
+                        .x(request.getX())
+                        .y(request.getY())
+                        .r(request.getR())
+                        .result(AreaChecker.getResult(request.getX(), request.getY(), request.getR()))
+                        .time(currentTime)
+                        .executionTime(String.format("%.2f", (double) (System.nanoTime() - scriptStart) * 0.0001))
+                        .ownerId(currentUser)
+                        .build();
 
-            pointRepository.save(point);
+                pointRepository.save(point);
 
-            return PointResponse.builder()
-                    .timeStamp(LocalDateTime.now())
-                    .message("Point created.")
-                    .status(HttpStatus.CREATED)
-                    .statusCode(HttpStatus.CREATED.value())
-                    .pointsData(Map.of("point", point))
-                    .build();
-        } else {
-            return PointResponse.builder()
-                    .timeStamp(LocalDateTime.now())
-                    .message(validationMessage)
-                    .status(HttpStatus.FORBIDDEN)
-                    .statusCode(HttpStatus.FORBIDDEN.value())
-                    .build();
-        }
+                return PointResponse.builder()
+                        .timeStamp(LocalDateTime.now())
+                        .message("Point created.")
+                        .status(HttpStatus.CREATED)
+                        .statusCode(HttpStatus.CREATED.value())
+                        .pointsData(Map.of("point", point))
+                        .build();
+            } else {
+                return PointResponse.builder()
+                        .timeStamp(LocalDateTime.now())
+                        .message(validationMessage)
+                        .status(HttpStatus.FORBIDDEN)
+                        .statusCode(HttpStatus.FORBIDDEN.value())
+                        .build();
+            }
+//        } else {
+//            return PointResponse.builder()
+//                    .timeStamp(LocalDateTime.now())
+//                    .message("You have to authorize.")
+//                    .devMessage("Account disabled.")
+//                    .status(HttpStatus.UNAUTHORIZED)
+//                    .statusCode(HttpStatus.UNAUTHORIZED.value())
+//                    .build();
+//        }
     }
 
     public PointResponse list() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();;
+        User currentUser = (User) authentication.getPrincipal();;
         List<Point> points = pointRepository.findAllByOwnerId(currentUser);
-
-        return PointResponse.builder()
-                .timeStamp(LocalDateTime.now())
-                .message("Points loaded.")
-                .status(HttpStatus.OK)
-                .statusCode(HttpStatus.OK.value())
-                .devMessage(String.valueOf(points.size()))
-                .pointsData(Map.of("point", Lists.newArrayList(points.iterator())))
-                .build();
+//        if (currentUser.isEnable()) {
+            return PointResponse.builder()
+                    .timeStamp(LocalDateTime.now())
+                    .message("Points loaded.")
+                    .status(HttpStatus.OK)
+                    .statusCode(HttpStatus.OK.value())
+                    .devMessage(String.valueOf(points.size()))
+                    .pointsData(Map.of("point", Lists.newArrayList(points.iterator())))
+                    .build();
+//        } else {
+//            return PointResponse.builder()
+//                    .timeStamp(LocalDateTime.now())
+//                    .message("You have to authorize.")
+//                    .devMessage("Account disabled.")
+//                    .status(HttpStatus.UNAUTHORIZED)
+//                    .statusCode(HttpStatus.UNAUTHORIZED.value())
+//                    .build();
+//        }
     }
 
     public PointResponse clearTable() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
-        List<Point> removedPoints = Lists.newArrayList(pointRepository.findAllByOwnerId(currentUser).iterator());
-
-        pointRepository.deleteAllByOwnerId(userRepository.findByUsername(currentUser.getUsername()));
-        return PointResponse.builder()
-                .timeStamp(LocalDateTime.now())
-                .message("Table cleared.")
-                .status(HttpStatus.OK)
-                .statusCode(HttpStatus.OK.value())
-                .pointsData(Map.of("cleared", removedPoints))
-                .build();
+//        if (currentUser.isEnable()) {
+            List<Point> removedPoints = Lists.newArrayList(pointRepository.findAllByOwnerId(currentUser).iterator());
+            pointRepository.deleteAllByOwnerId(userRepository.findByUsername(currentUser.getUsername()));
+            return PointResponse.builder()
+                    .timeStamp(LocalDateTime.now())
+                    .message("Table cleared.")
+                    .status(HttpStatus.OK)
+                    .statusCode(HttpStatus.OK.value())
+                    .pointsData(Map.of("cleared", removedPoints))
+                    .build();
+//        } else {
+//            return PointResponse.builder()
+//                    .timeStamp(LocalDateTime.now())
+//                    .message("You have to authorize.")
+//                    .devMessage("Account disabled.")
+//                    .status(HttpStatus.UNAUTHORIZED)
+//                    .statusCode(HttpStatus.UNAUTHORIZED.value())
+//                    .build();
+//        }
     }
 
     private String validate(Object x, Object y, Object r){
         if (x instanceof Float && y instanceof Float && r instanceof Float) {
+            float MIN_X = -2f;
+            float MAX_X = 2f;
+            float MIN_Y = -5f;
+            float MAX_Y = 3f;
+            float MIN_R = 0f;
+            float MAX_R = 2f;
             if ((float) x >= MIN_X && (float) x <= MAX_X && (float) y >= MIN_Y && (float) y <= MAX_Y && (float) r > MIN_R && (float) r <= MAX_R) {
                 return "success";
             }

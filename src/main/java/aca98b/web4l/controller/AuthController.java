@@ -24,9 +24,4 @@ public class AuthController {
     public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request){
         return ResponseEntity.ok(authService.authenticate(request));
     }
-
-//    @DeleteMapping("/logout")
-//    public ResponseEntity<AuthResponse> logout(@RequestBody AuthRequest request) {
-//        //todo: not implemented yet
-//    }
 }
