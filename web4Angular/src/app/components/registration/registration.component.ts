@@ -27,14 +27,14 @@ export class RegistrationComponent implements OnInit{
   checkInput() {
     const containsRussian = /[а-яА-Я]/.test(<string>this.dataRegister.username) || /[а-яА-Я]/.test(<string>this.dataRegister.password);
     // @ts-ignore
-    const loginLen = this.dataRegister.username.length > 10;
+    const loginLen = this.dataRegister.username.length > 30;
     this.isTextVisible = containsRussian || loginLen;
 
     if (containsRussian){
       this.errorMessage = 'Only english letters in login and password!';
     }
     if (loginLen){
-      this.errorMessage = 'Max login length is 10';
+      this.errorMessage = 'Max login length is 30';
     }
   }
 

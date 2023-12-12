@@ -194,8 +194,15 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   logOut(){
-    localStorage.removeItem("sessionId");
-    this.router.navigate(['/']);
+    this.dataService.logoutUser(this.data).subscribe(
+        (response) => {
+          localStorage.removeItem("sessionId");
+          this.router.navigate(['/']);
+        },
+        (error) => {
+          console.error("Can't logout", error);
+        }
+    );
   }
 
   graphChange(event: any){

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -25,6 +25,10 @@ export class DataService {
   logoutUser(data:any): Observable<any> {
     const url = `${this.baseUrl}/logout`;
 
-    return this.httpClient.post(url, data);
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem("sessionId")}`
+    });
+
+    return this.httpClient.delete(url, { headers });
   }
 }
