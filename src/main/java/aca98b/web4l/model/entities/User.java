@@ -38,6 +38,7 @@ public class User implements UserDetails{
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 
