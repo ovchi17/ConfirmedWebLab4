@@ -1,4 +1,4 @@
-package aca98b.web4l.model;
+package aca98b.web4l.model.entities;
 
 public enum Role {
     USER,

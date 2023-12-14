@@ -1,5 +1,6 @@
 package aca98b.web4l;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,7 @@ public class Lab4Application {
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
 			@Override
-			public void addCorsMappings(CorsRegistry registry) {
+			public void addCorsMappings(@NotNull CorsRegistry registry) {
 				registry.addMapping("/api/v1/**")
 						.allowedOrigins("http://localhost:4200")
 						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
@@ -26,5 +27,4 @@ public class Lab4Application {
 			}
 		};
 	}
-
 }

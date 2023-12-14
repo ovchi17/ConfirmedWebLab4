@@ -15,8 +15,9 @@ public class PointResponse extends Response{
     Map<String, ?> pointsData;
 
     @Builder(builderMethodName = "pointResponseBuilder")
-    public PointResponse(LocalDateTime timeStamp, int statusCode, HttpStatus status, String message, String devMessage, Map<String, ?> pointsData) {
-        super(timeStamp, statusCode, status, message, devMessage);
+    public PointResponse(LocalDateTime timeStamp, int statusCode, HttpStatus status,
+                         String message, String devMessage, Map<String, ?> pointsData, String username) {
+        super(timeStamp, statusCode, status, message, devMessage, username);
         this.pointsData = pointsData;
     }
 

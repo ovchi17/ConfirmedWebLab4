@@ -1,4 +1,4 @@
-package aca98b.web4l.config;
+package aca98b.web4l.config.filter;
 
 import aca98b.web4l.model.entities.repo.TokenRepository;
 import aca98b.web4l.service.JwtService;

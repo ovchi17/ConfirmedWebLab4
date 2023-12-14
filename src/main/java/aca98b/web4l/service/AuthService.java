@@ -1,6 +1,7 @@
 package aca98b.web4l.service;
 
-import aca98b.web4l.model.Role;
+import aca98b.web4l.annotation.LogBadRequest;
+import aca98b.web4l.model.entities.Role;
 import aca98b.web4l.model.entities.Token;
 import aca98b.web4l.model.entities.TokenType;
 import aca98b.web4l.model.entities.User;
@@ -8,21 +9,18 @@ import aca98b.web4l.model.entities.repo.TokenRepository;
 import aca98b.web4l.model.entities.repo.UserRepository;
 import aca98b.web4l.model.request.AuthRequest;
 import aca98b.web4l.model.response.AuthResponse;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository repository;
@@ -51,6 +49,8 @@ public class AuthService {
         tokenRepository.saveAll(validUserTokens);
     }
 
+    @LogBadRequest
+    @Transactional
     public AuthResponse register(AuthRequest request) {
         log.info("registering user...");
         if (repository.existsByUsername(request.getUsername())) {
@@ -60,12 +60,14 @@ public class AuthService {
                     .message("Username taken.")
                     .status(HttpStatus.CONFLICT)
                     .statusCode(HttpStatus.CONFLICT.value())
+                    .username(request.getUsername())
                     .build();
         } else {
             User user = User.builder()
                     .username(request.getUsername())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .role(Role.USER)
+                    .username(request.getUsername())
                     .build();
             var savedUser = repository.save(user);
 
@@ -77,10 +79,13 @@ public class AuthService {
                     .status(HttpStatus.CREATED)
                     .statusCode(HttpStatus.CREATED.value())
                     .jwt(jwtToken)
+                    .username(request.getUsername())
                     .build();
         }
     }
 
+    @LogBadRequest
+    @Transactional
     public AuthResponse authenticate(AuthRequest request) {
         log.info("searching for user {}", request.getUsername());
         if (repository.existsByUsername(request.getUsername())) {
@@ -97,6 +102,7 @@ public class AuthService {
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
                         .jwt(jwtToken)
+                        .username(request.getUsername())
                         .build();
 
             }
@@ -106,6 +112,7 @@ public class AuthService {
                     .message("Incorrect password.")
                     .status(HttpStatus.UNAUTHORIZED)
                     .statusCode(HttpStatus.UNAUTHORIZED.value())
+                    .username(request.getUsername())
                     .build();
         }
         log.info("user {}: not found", request.getUsername());
@@ -114,6 +121,7 @@ public class AuthService {
                 .message("Incorrect username.")
                 .status(HttpStatus.UNAUTHORIZED)
                 .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .username(request.getUsername())
                 .build();
     }
 }

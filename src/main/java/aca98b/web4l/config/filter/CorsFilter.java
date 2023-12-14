@@ -1,4 +1,4 @@
-package aca98b.web4l.config;
+package aca98b.web4l.config.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,7 +24,6 @@ public class CorsFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             filterChain.doFilter(request, response);
-            return;
         }
     }
 }

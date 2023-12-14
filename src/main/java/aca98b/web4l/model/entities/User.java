@@ -1,6 +1,5 @@
 package aca98b.web4l.model.entities;
 
-import aca98b.web4l.model.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;

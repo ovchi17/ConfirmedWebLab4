@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class Token {
     @Id
     @GeneratedValue
+    @SequenceGenerator(name = "tokens_id_seq", sequenceName = "tokens_id_seq", allocationSize = 1)
     private Long id;
 
     private String token;

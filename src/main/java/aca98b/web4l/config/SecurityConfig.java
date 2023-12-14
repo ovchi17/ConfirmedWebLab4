@@ -1,6 +1,7 @@
 package aca98b.web4l.config;
 
-import jakarta.servlet.Filter;
+import aca98b.web4l.config.filter.CorsFilter;
+import aca98b.web4l.config.filter.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .logoutSuccessHandler(
                         (request, response, authentication) ->
                                 SecurityContextHolder.clearContext()
-                    )
+                    ).deleteCookies()
                 );
 
         return http.build();

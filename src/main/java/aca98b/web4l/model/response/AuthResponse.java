@@ -14,8 +14,9 @@ public class AuthResponse extends Response {
     private String jwt;
 
     @Builder(builderMethodName = "authResponseBuilder")
-    public AuthResponse(LocalDateTime timeStamp, int statusCode, HttpStatus status, String message, String devMessage, String jwt) {
-        super(timeStamp, statusCode, status, message, devMessage);
+    public AuthResponse(LocalDateTime timeStamp, int statusCode, HttpStatus status,
+                        String message, String devMessage, String jwt, String username) {
+        super(timeStamp, statusCode, status, message, devMessage, username);
         this.jwt = jwt;
     }
 

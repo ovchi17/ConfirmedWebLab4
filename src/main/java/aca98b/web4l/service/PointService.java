@@ -1,20 +1,20 @@
 package aca98b.web4l.service;
 
 
+import aca98b.web4l.annotation.LogBadRequest;
 import aca98b.web4l.model.entities.Point;
 import aca98b.web4l.model.entities.User;
 import aca98b.web4l.model.entities.repo.PointRepository;
 import aca98b.web4l.model.entities.repo.UserRepository;
 import aca98b.web4l.model.request.PointRequest;
 import aca98b.web4l.model.response.PointResponse;
-import aca98b.web4l.utils.AreaChecker;
+import aca98b.web4l.util.AreaChecker;
+import jakarta.transaction.Transactional;
 import org.apache.commons.compress.utils.Lists;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 
 
 import lombok.RequiredArgsConstructor;
@@ -27,23 +27,23 @@ import java.util.List;
 import java.util.Map;
 
 
-@RequiredArgsConstructor
-@Service
-@Transactional
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class PointService {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private final PointRepository pointRepository;
     private final UserRepository userRepository;
 
+    @LogBadRequest
+    @Transactional
     public PointResponse create(PointRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();;
-        User currentUser = (User) authentication.getPrincipal();;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
         String currentTime = LocalTime.now().format(formatter);
         long scriptStart = System.nanoTime();
         String validationMessage = validate(request.getX(), request.getY(), request.getR());
 
-//        if (currentUser.isEnable()) {
             if (validationMessage.equals("success")) {
                 Point point = Point.builder()
                         .x(request.getX())
@@ -63,6 +63,7 @@ public class PointService {
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())
                         .pointsData(Map.of("point", point))
+                        .username(currentUser.getUsername())
                         .build();
             } else {
                 return PointResponse.builder()
@@ -70,47 +71,33 @@ public class PointService {
                         .message(validationMessage)
                         .status(HttpStatus.FORBIDDEN)
                         .statusCode(HttpStatus.FORBIDDEN.value())
+                        .username(currentUser.getUsername())
                         .build();
             }
-//        } else {
-//            return PointResponse.builder()
-//                    .timeStamp(LocalDateTime.now())
-//                    .message("You have to authorize.")
-//                    .devMessage("Account disabled.")
-//                    .status(HttpStatus.UNAUTHORIZED)
-//                    .statusCode(HttpStatus.UNAUTHORIZED.value())
-//                    .build();
-//        }
     }
 
+    @LogBadRequest
+    @Transactional
     public PointResponse list() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();;
-        User currentUser = (User) authentication.getPrincipal();;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
         List<Point> points = pointRepository.findAllByOwnerId(currentUser);
-//        if (currentUser.isEnable()) {
-            return PointResponse.builder()
-                    .timeStamp(LocalDateTime.now())
-                    .message("Points loaded.")
-                    .status(HttpStatus.OK)
-                    .statusCode(HttpStatus.OK.value())
-                    .devMessage(String.valueOf(points.size()))
-                    .pointsData(Map.of("point", Lists.newArrayList(points.iterator())))
-                    .build();
-//        } else {
-//            return PointResponse.builder()
-//                    .timeStamp(LocalDateTime.now())
-//                    .message("You have to authorize.")
-//                    .devMessage("Account disabled.")
-//                    .status(HttpStatus.UNAUTHORIZED)
-//                    .statusCode(HttpStatus.UNAUTHORIZED.value())
-//                    .build();
-//        }
+        return PointResponse.builder()
+                .timeStamp(LocalDateTime.now())
+                .message("Points loaded.")
+                .status(HttpStatus.OK)
+                .statusCode(HttpStatus.OK.value())
+                .devMessage(String.valueOf(points.size()))
+                .pointsData(Map.of("point", Lists.newArrayList(points.iterator())))
+                .username(currentUser.getUsername())
+                .build();
     }
 
+    @LogBadRequest
+    @Transactional
     public PointResponse clearTable() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
-//        if (currentUser.isEnable()) {
             List<Point> removedPoints = Lists.newArrayList(pointRepository.findAllByOwnerId(currentUser).iterator());
             pointRepository.deleteAllByOwnerId(userRepository.findByUsername(currentUser.getUsername()));
             return PointResponse.builder()
@@ -119,16 +106,8 @@ public class PointService {
                     .status(HttpStatus.OK)
                     .statusCode(HttpStatus.OK.value())
                     .pointsData(Map.of("cleared", removedPoints))
+                    .username(currentUser.getUsername())
                     .build();
-//        } else {
-//            return PointResponse.builder()
-//                    .timeStamp(LocalDateTime.now())
-//                    .message("You have to authorize.")
-//                    .devMessage("Account disabled.")
-//                    .status(HttpStatus.UNAUTHORIZED)
-//                    .statusCode(HttpStatus.UNAUTHORIZED.value())
-//                    .build();
-//        }
     }
 
     private String validate(Object x, Object y, Object r){
