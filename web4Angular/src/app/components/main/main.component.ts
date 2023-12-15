@@ -207,6 +207,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
 
   graphChange(event: any){
     const valueR = parseFloat(this.element.r);
+    this.checkInput()
     if(!((isNaN(valueR) || valueR <= 0 || valueR > 2) && this.element.r != null)){
       const points = this.svgElement.nativeElement.querySelectorAll('.graph-point');
       points.forEach(point => {
