@@ -13,11 +13,10 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginValue: string = '';
   passwordValue: string = '';
-  dataLogin: Data = new Data();
   isTextVisible: boolean = false;
   errorMessage: string = '';
 
-  constructor(private dataService: DataService, private router: Router) {
+  constructor(public dataLogin: Data, private dataService: DataService, private router: Router) {
   }
 
   ngOnInit() {

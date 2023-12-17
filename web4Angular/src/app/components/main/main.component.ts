@@ -33,8 +33,6 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
   isTextVisible = false;
   errorMessage = "";
   showR = "";
-  data: Data = new Data();
-  element: Element = new Element();
   @ViewChild('svgElement') svgElement!: ElementRef<SVGSVGElement>;
 
   ngAfterViewInit(): void {
@@ -110,7 +108,7 @@ export class MainComponent implements OnInit, AfterViewInit, OnDestroy {
     this.renderer.appendChild(this.svgElement.nativeElement, point);
   }
 
-  constructor(private dataService: DataService, private elementService: ElementService, private renderer: Renderer2, private router: Router) {
+  constructor(private dataService: DataService, public data: Data, public element: Element, private elementService: ElementService, private renderer: Renderer2, private router: Router) {
     this.modelList = [];
 
     this.valuesX = ['-2', '-1.5', '-1', '-0.5', '0', '0.5', '1.0', '1.5', '2.0'];

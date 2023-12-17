@@ -12,11 +12,10 @@ import { Router } from '@angular/router';
 export class RegistrationComponent implements OnInit{
   loginValue: string = '';
   passwordValue: string = '';
-  dataRegister: Data = new Data();
   isTextVisible: boolean = false;
   errorMessage: string = '';
 
-  constructor(private dataService: DataService, private router: Router) {
+  constructor(public dataRegister: Data, private dataService: DataService, private router: Router) {
   }
 
   ngOnInit() {
